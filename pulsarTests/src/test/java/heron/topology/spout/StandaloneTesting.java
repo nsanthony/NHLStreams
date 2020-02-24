@@ -9,12 +9,16 @@ import com.twitter.heron.api.tuple.Tuple;
 import org.apache.pulsar.PulsarStandalone;
 import org.apache.pulsar.PulsarStandaloneBuilder;
 import org.apache.pulsar.broker.ServiceConfiguration;
+import org.apache.pulsar.client.admin.PulsarAdmin;
 import org.apache.pulsar.client.api.*;
 import org.apache.pulsar.proxy.socket.client.SimpleTestProducerSocket;
 import org.eclipse.jetty.websocket.api.Session;
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 import org.apache.pulsar.PulsarStandalone.*;
@@ -23,6 +27,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.mock.*;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import javax.validation.constraints.AssertTrue;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,13 +39,38 @@ public class StandaloneTesting {
 
     private PulsarSpout spout;
     private Map<String, Object> testConf;
+    private PulsarClient testClient;
+    private Producer<String> newProducer;
 
     @Before
     public void setup(){
         try {
             testConf = setCongifs();
-            spout = mock(PulsarSpout.class);
+
+
+            testClient = PulsarClient.builder()
+                    .serviceUrl((String) testConf.get("url"))
+                    .build();
+
+            newProducer = testClient.newProducer(Schema.STRING)
+                    .topic((String) testConf.get("topic"))
+                    .create();
+
+            newProducer.send("testMessage");
+
+            spout = new PulsarSpout((String) testConf.get("url"), (String) testConf.get("topic"), (String) testConf.get("subName"));
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @After
+    public void cleanup(){
+        try {
+            newProducer.close();
+            testClient.close();
+        } catch (PulsarClientException e) {
             e.printStackTrace();
         }
     }
@@ -48,27 +78,19 @@ public class StandaloneTesting {
 
     @Test
     public void testConnection(){
-        ISpoutOutputCollector spoutCollector = new TestSpoutCollector();
-        SpoutOutputCollector outputCollector = new SpoutOutputCollector(spoutCollector);
-//        spout.open(testConf, mock(TopologyContext.class), mock(SpoutOutputCollector.class));
-
-        MockitoAnnotations.initMocks(this);
-        String setClient = null;
-
-        ReflectionTestUtils.setField(spout, "consumer", setClient);
-        spout.nextTuple();
-
 
 
         try {
-            PulsarClient testClient = PulsarClient.builder()
-                    .serviceUrl((String) testConf.get("url"))
-                    .build();
 
+            spout.nextTuple();
 
-        verify(spout).getConsumer(testClient, (String) testConf.get("topic"), (String) testConf.get("subName"));
+            Field consumerField = spout.getClass().getField("consumer");
 
-        } catch (PulsarClientException e) {
+            consumerField.setAccessible(true);
+
+            Assert.assertNotNull(consumerField);
+
+        } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
 
@@ -79,7 +101,7 @@ public class StandaloneTesting {
     private Map setCongifs(){
         Map<String, Object> configs = new HashMap<>();
         configs.put("url", "pulsar://localhost:6650");
-        configs.put("topic", "testTopic");
+        configs.put("topic", "my-test-topic");
         configs.put("subName", "testSubname");
 
         return configs;
