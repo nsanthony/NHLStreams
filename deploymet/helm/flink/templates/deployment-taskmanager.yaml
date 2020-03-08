@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.flink.cluster_name }}-taskmanager
+spec:
+  replicas: {{ .Values.flink.num_taskmanagers }}
+  selector:
+    matchLabels:
+      app: {{ .Values.flink.cluster_name }}
+      component: {{ .Values.flink.cluster_name }}-taskmanager
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.flink.cluster_name }}
+        component: {{ .Values.flink.cluster_name }}-taskmanager
+    spec:
+      containers:
+      - name: taskmanager
+        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        workingDir: /opt/flink
+        command: ["/bin/bash", "-c", "$FLINK_HOME/bin/taskmanager.sh start; \
+          while :;
+          do
+            if [[ -f $(find log -name '*taskmanager*.log') ]];
+              then tail -f -n +1 log/*taskmanager*.log;
+            fi;
+          done"]
+        args:
+        - taskmanager
+        ports:
+        - name: data
+          containerPort: 6121
+        - name: rpc
+          containerPort: 6122
+        - name: query
+          containerPort: 6125
+        env:
+        - name: FLINK_CONF_DIR
+          value: /opt/flink/conf
+        - name: JOB_MANAGER_RPC_ADDRESS
+          value: {{ .Values.flink.jobmanager_rpc_address }}
+        resources:
+          limits:
+            cpu: {{ .Values.flink.num_slots_per_taskmanager }}
+            memory: {{ .Values.resources.taskmanager.limits.memory }}
+          requests:
+            cpu: {{ .Values.flink.num_slots_per_taskmanager }}
+            memory: {{ .Values.resources.taskmanager.requests.memory }}
+        volumeMounts:
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf/
+      volumes:
+      - name: flink-config-volume
+        configMap:
+          name: flink-config
+          items:
+          - key: flink-conf.yaml
+            path: flink-conf.yaml
+          - key: log4j.properties
+            path: log4j.properties
