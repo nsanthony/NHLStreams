@@ -1,1 +1,3 @@
 link the zookeeper pods to a service in kubernetes
+add the ports to the values yaml for client, server, and leaderElection for zookeeper deployment (2188, 2888, 3888)
+create the service for zookeeper
