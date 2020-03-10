@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+    maven { url = 'https://mvnrepository.com/artifact/org.apache.pulsar/pulsar/' }
+    maven { url = 'https://mvnrepository.com/artifact/org.mockito/mockito-core/'}
+    maven { url = 'https://mvnrepository.com/artifact/org.springframework/spring-context'}
+}
+
+dependencies {
+
+
+    compile 'com.twitter.heron:heron-api:0.17.8'
+    compile 'org.apache.pulsar:pulsar-client:2.4.2'
+    compile 'org.testcontainers:kafka:1.12.5'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'org.apache.pulsar.tests:integration:2.4.2'
+    testCompile 'org.apache.pulsar:pulsar:2.4.2'
+    testCompile 'org.apache.pulsar:pulsar-client:2.4.2'
+    testCompile 'org.apache.pulsar:pulsar-testclient:2.4.2'
+    testCompile 'org.apache.pulsar:pulsar-standalone-docker-image:2.4.2'
+    testCompile 'org.mockito:mockito-core:3.2.4'
+    testCompile 'org.springframework:spring-test:5.1.2.RELEASE'
+    testCompile 'org.springframework:spring-context:5.1.2.RELEASE'
+
+
+}

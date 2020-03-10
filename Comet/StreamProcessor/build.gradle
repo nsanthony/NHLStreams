@@ -48,6 +48,17 @@ dependencies {
     compileOnly 'org.apache.flink:flink-connector-nifi_2.11:1.9.0'
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'streamprocessor.filterstream.FilterStream'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 group = 'NHLStreams'
 version = '0.0.1'
 description = 'NHL data scraper & processor in NRT'

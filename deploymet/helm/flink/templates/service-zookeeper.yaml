@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.flink.cluster_name }}-zookeeper
+spec:
+  type: ClusterIP
+  ports:
+  - name: client
+    port: {{ .Values.zookeeper.clientPort }}
+  - name: server
+    port: {{ .Values.zookeeper.serverPort }}
+  - name: leader-election
+    port: {{ .Values.zookeeper.leaderElectionPort }}
+  selector:
+    app: {{ .Values.flink.cluster_name }}
+    component: {{ .Values.flink.cluster_name }}-zookeeper
+    #type: LoadBalancer
