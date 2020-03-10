@@ -14,3 +14,4 @@ spec:
   selector:
     app: {{ .Values.flink.cluster_name }}
     component: {{ .Values.flink.cluster_name }}-jobmanager
+    #  type: LoadBalancer

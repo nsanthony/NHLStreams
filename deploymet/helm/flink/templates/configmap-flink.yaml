@@ -17,10 +17,10 @@ data:
     query.server.port: 6125
     heartbeat.interval: 1000
     heartbeat.timeout: 5000
-    #    high-availability: zookeeper
-    #    high-availability.zookeeper.quorum: zoooker-cluster:2181
-    #    high-availability.storageDir: /data
-    #    high-availability.zookeeper.path.root: /flink
+    high-availability: zookeeper
+    high-availability.zookeeper.quorum: flink-zookeeper:{{ .Values.zookeeper.clientPort }}
+    high-availability.storageDir: /data
+    high-availability.zookeeper.path.root: /flink
   log4j.properties: |+
     log4j.rootLogger=INFO, file
     log4j.logger.akka=INFO

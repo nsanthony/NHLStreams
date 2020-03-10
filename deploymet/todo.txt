@@ -1,4 +1,1 @@
-link the zookeeper pods to a service in kubernetes
-add the ports to the values yaml for client, server, and leaderElection for zookeeper deployment (2188, 2888, 3888)
-create the service for zookeeper (leader-election and server ports)
-look at adding the server ports, election ports, and client ports to the env variables 
+Make sure to fiddle with the config templates yaml. the services can now see zookeeper is there. Try the service url 

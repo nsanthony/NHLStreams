@@ -1,22 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: flink-zookeeper
+  name: {{ .Values.flink.cluster_name }}-zookeeper
 spec:
-  replicas: 1
+  replicas: {{ .Values.flink.numZookeeper }}
   selector:
     matchLabels:
-      app: flink
-      component: zookeeper
+      app: {{ .Values.flink.cluster_name }}
+      component: {{ .Values.flink.cluster_name }}-zookeeper
   template:
     metadata:
       labels:
-        app: flink
-        component: zookeeper
+        app: {{ .Values.flink.cluster_name }}
+        component: {{ .Values.flink.cluster_name }}-zookeeper
     spec:
       containers:
       - name: zookeeper
-        image: nsanthony/flink-test-job:1.2
+        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
         workingDir: /opt/flink
         command: ["/bin/bash", "-c", "$FLINK_HOME/bin/start-zookeeper-quorum.sh; \
           while :;
@@ -26,11 +27,15 @@ spec:
             fi;
           done"]
         ports:
-        - containerPort: 2181
-          name: quorum
+        - containerPort: {{ .Values.zookeeper.clientPort }}
+          name: client
+        - containerPort: {{ .Values.zookeeper.serverPort }}
+          name: server
+        - containerPort: {{ .Values.zookeeper.leaderElectionPort }}
+          name: leader-election
         livenessProbe:
           tcpSocket:
-            port: 2181
+            port: {{ .Values.zookeeper.clientPort }}
           initialDelaySeconds: 30
           periodSeconds: 60
         resources:

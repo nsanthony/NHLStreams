@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ .Values.flink.cluster_name }}-jobmanager
 spec:
-  replicas: 1
+  replicas: {{ .Values.flink.numJobmanagers }}
   selector:
     matchLabels:
       app: {{ .Values.flink.cluster_name }}
@@ -40,6 +40,11 @@ spec:
             port: 8081
           initialDelaySeconds: 30
           periodSeconds: 60
+        env:
+        - name: FLINK_CONF_DIR
+          value: /opt/flink/conf
+        - name: JOB_MANAGER_RPC_ADDRESS
+          value: {{ .Values.flink.jobmanager_rpc_address }}
         resources:
           limits:
             cpu: {{ .Values.resources.jobmanager.limits.cpu }}
