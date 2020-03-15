@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.flink.cluster_name }}-zookeeper
+  name: {{ .Values.flink.clusterName }}-zookeeper
 spec:
-  replicas: {{ .Values.flink.numZookeeper }}
+  replicas: {{ .Values.zookeeper.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.flink.cluster_name }}
-      component: {{ .Values.flink.cluster_name }}-zookeeper
+      app: {{ .Values.flink.clusterName }}
+      component: {{ .Values.flink.clusterName }}-zookeeper
   template:
     metadata:
       labels:
-        app: {{ .Values.flink.cluster_name }}
-        component: {{ .Values.flink.cluster_name }}-zookeeper
+        app: {{ .Values.flink.clusterName }}
+        component: {{ .Values.flink.clusterName }}-zookeeper
     spec:
       containers:
       - name: zookeeper
         image: {{ .Values.image }}:{{ .Values.imageTag }}
         imagePullPolicy: {{ .Values.imagePullPolicy }}
         workingDir: /opt/flink
-        command: ["/bin/bash", "-c", "$FLINK_HOME/bin/start-zookeeper-quorum.sh; \
+        command: ["/bin/bash", "-c","$FLINK_HOME/bin/start-zookeeper-quorum.sh; \
           while :;
           do
             if [[ -f $(find log -name '*zookeeper*.log') ]];
@@ -33,6 +33,9 @@ spec:
           name: server
         - containerPort: {{ .Values.zookeeper.leaderElectionPort }}
           name: leader-election
+        env:
+          - name: JVMFLAGS
+            value: "-Xmx2048m"
         livenessProbe:
           tcpSocket:
             port: {{ .Values.zookeeper.clientPort }}

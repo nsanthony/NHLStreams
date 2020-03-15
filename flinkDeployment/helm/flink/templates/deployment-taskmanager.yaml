@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.flink.cluster_name }}-taskmanager
+  name: {{ .Values.flink.clusterName }}-taskmanager
 spec:
-  replicas: {{ .Values.flink.num_taskmanagers }}
+  replicas: {{ .Values.flink.taskmanager.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.flink.cluster_name }}
-      component: {{ .Values.flink.cluster_name }}-taskmanager
+      app: {{ .Values.flink.clusterName }}
+      component: {{ .Values.flink.clusterName }}-taskmanager
   template:
     metadata:
       labels:
-        app: {{ .Values.flink.cluster_name }}
-        component: {{ .Values.flink.cluster_name }}-taskmanager
+        app: {{ .Values.flink.clusterName }}
+        component: {{ .Values.flink.clusterName }}-taskmanager
     spec:
       containers:
       - name: taskmanager
@@ -42,10 +42,10 @@ spec:
           value: {{ .Values.flink.jobmanager_rpc_address }}
         resources:
           limits:
-            cpu: {{ .Values.flink.num_slots_per_taskmanager }}
+            cpu: {{ .Values.flink.taskmanager.slots }}
             memory: {{ .Values.resources.taskmanager.limits.memory }}
           requests:
-            cpu: {{ .Values.flink.num_slots_per_taskmanager }}
+            cpu: {{ .Values.flink.taskmanager.slots }}
             memory: {{ .Values.resources.taskmanager.requests.memory }}
         volumeMounts:
         - name: flink-config-volume

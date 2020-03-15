@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.flink.cluster_name }}-jobmanager
+  name: {{ .Values.flink.clusterName }}-jobmanager
 spec:
-  replicas: {{ .Values.flink.numJobmanagers }}
+  replicas: {{ .Values.flink.jobmanager.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.flink.cluster_name }}
-      component: {{ .Values.flink.cluster_name }}-jobmanager
+      app: {{ .Values.flink.clusterName }}
+      component: {{ .Values.flink.clusterName }}-jobmanager
   template:
     metadata:
       labels:
-        app: {{ .Values.flink.cluster_name }}
-        component: {{ .Values.flink.cluster_name }}-jobmanager
+        app: {{ .Values.flink.clusterName }}
+        component: {{ .Values.flink.clusterName }}-jobmanager
     spec:
       containers:
       - name: jobmanager

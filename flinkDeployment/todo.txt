@@ -1,1 +1,1 @@
-Make sure to fiddle with the config templates yaml. the services can now see zookeeper is there. Try the service url 
+Change the taskmanagers to come up after the jobmanager has connected and picked a leader. Or create more zookeeper replicas

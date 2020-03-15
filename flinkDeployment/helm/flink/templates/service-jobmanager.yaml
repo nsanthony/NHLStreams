@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.flink.cluster_name }}-jobmanager
+  name: {{ .Values.flink.clusterName }}-jobmanager
 spec:
   type: ClusterIP
   ports:
@@ -12,6 +12,6 @@ spec:
   - name: ui
     port: 8081
   selector:
-    app: {{ .Values.flink.cluster_name }}
-    component: {{ .Values.flink.cluster_name }}-jobmanager
+    app: {{ .Values.flink.clusterName }}
+    component: {{ .Values.flink.clusterName }}-jobmanager
     #  type: LoadBalancer

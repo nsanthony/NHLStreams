@@ -11,16 +11,29 @@ data:
     #jobmanager.rpc.port: {{ .Values.flink.jobmanager_rpc_port }}
     #rest.address: {{ .Values.flink.jobmanager_rpc_address }}
     #rest.bind-address: {{ .Values.flink.jobmanager_rpc_bind }} 
-    jobmanager.heap.mb: {{ .Values.flink.jobmanager_heap_mb }}
-    taskmanager.heap.mb: {{ .Values.flink.taskmanager_heap_mb }}
-    taskmanager.numberOfTaskSlots: {{ .Values.flink.num_slots_per_taskmanager }}
+    jobmanager.heap.mb: {{ .Values.flink.jobmanager.heapMB }}
+    taskmanager.heap.mb: {{ .Values.flink.taskmanager.heapMB }}
+    taskmanager.numberOfTaskSlots: {{ .Values.flink.taskmanager.slots }}
     query.server.port: 6125
     heartbeat.interval: 1000
     heartbeat.timeout: 5000
-    high-availability: zookeeper
-    high-availability.zookeeper.quorum: flink-zookeeper:{{ .Values.zookeeper.clientPort }}
-    high-availability.storageDir: /data
-    high-availability.zookeeper.path.root: /flink
+    kubernetes.rest-service.exposed.type: NodePort
+    kubernetes.cluster-id: {{ .Values.flink.clusterName }} 
+    {{- if (eq .Values.zookeeper.useZookeeper true) }}
+      high-availability: zookeeper
+      high-availability.zookeeper.quorum: {{ .Values.zookeeper.clusterIP }}:{{ .Values.zookeeper.clientPort }}
+      high-availability.zookeeper.heap.mb: {{ .Values.zookeeper.heapMB }}
+      high-availability.storageDir: /data
+      high-availability.zookeeper.path.root: /flink
+      high-availability.zookeeper.client.connection-timeout: {{ .Values.zookeeper.clientTimeout }}
+      high-availability.zookeeper.client.session-timeout: {{ .Values.zookeeper.sessionTimeout }}
+      high-availability.zookeeper.client.max-retry-attempts: {{ .Values.zookeeper.clientRetryAttempts }}
+      zookeeper.sasl.disable: true
+      zookeeper.heap.mb: {{ .Values.zookeeper.heapMB }} 
+    {{ else }}
+      jobmanager.rpc.address: {{ .Values.flink.jobmanager_rpc_address }}
+      jobmanager.rpc.port: {{ .Values.flink.jobmanager_rpc_port }}
+    {{ end }}
   log4j.properties: |+
     log4j.rootLogger=INFO, file
     log4j.logger.akka=INFO
@@ -39,3 +52,4 @@ data:
     clientPort=2181
     server.0=localhost:2888:3888
     dataDir=/tmp/zookeeper
+
