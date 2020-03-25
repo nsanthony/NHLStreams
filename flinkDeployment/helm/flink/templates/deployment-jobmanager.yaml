@@ -44,7 +44,7 @@ spec:
         - name: FLINK_CONF_DIR
           value: /opt/flink/conf
         - name: JOB_MANAGER_RPC_ADDRESS
-          value: {{ .Values.flink.jobmanager_rpc_address }}
+          value: {{ .Values.jobmanager.address }}
         resources:
           limits:
             cpu: {{ .Values.resources.jobmanager.limits.cpu }}

@@ -18,11 +18,11 @@ resources:
   zookeeper:
     requests:
       cpu: 1000m
-      memory: 3000Mi
+      memory: 3500Mi
 
 zookeeper:
-  useZookeeper: true
-  heapMB: 1024
+  useZookeeper: false
+  heapMB: 2048
   clientPort: 2181
   serverPort: 2888
   leaderElectionPort: 3888
@@ -31,6 +31,10 @@ zookeeper:
   sessionTimeout: 900000
   clientRetryAttempts: 10
   clusterIP: 10.43.0.1
+jobmanager:
+ address: 10.43.114.217
+ kubeAddress: 10.43.114.217
+ port: 6123
 flink:
   clusterName: flink
   jobmanager: 
@@ -38,8 +42,8 @@ flink:
     replicas: 1
   taskmanager:
     heapMB: 1024
-    replicas: 1
-    slots: 1
+    replicas: 4
+    slots: 2
   ## Other config options for flink-conf.yaml
   #config: |
   #  some.option: 3

@@ -4,6 +4,7 @@ metadata:
   name: {{ .Values.flink.clusterName }}-jobmanager
 spec:
   type: ClusterIP
+  clusterIP: 10.43.114.217
   ports:
   - name: rpc
     port: 6123

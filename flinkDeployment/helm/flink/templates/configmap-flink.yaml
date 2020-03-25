@@ -7,10 +7,6 @@ metadata:
 data:
   flink-conf.yaml: |+
     blob.server.port: 6124
-    #jobmanager.rpc.address: {{ .Values.flink.jobmanager_rpc_address }}
-    #jobmanager.rpc.port: {{ .Values.flink.jobmanager_rpc_port }}
-    #rest.address: {{ .Values.flink.jobmanager_rpc_address }}
-    #rest.bind-address: {{ .Values.flink.jobmanager_rpc_bind }} 
     jobmanager.heap.mb: {{ .Values.flink.jobmanager.heapMB }}
     taskmanager.heap.mb: {{ .Values.flink.taskmanager.heapMB }}
     taskmanager.numberOfTaskSlots: {{ .Values.flink.taskmanager.slots }}
@@ -31,8 +27,8 @@ data:
       zookeeper.sasl.disable: true
       zookeeper.heap.mb: {{ .Values.zookeeper.heapMB }} 
     {{ else }}
-      jobmanager.rpc.address: {{ .Values.flink.jobmanager_rpc_address }}
-      jobmanager.rpc.port: {{ .Values.flink.jobmanager_rpc_port }}
+      jobmanager.rpc.address: {{ .Values.jobmanager.address }}
+      jobmanager.rpc.port: {{ .Values.jobmanager.port }}
     {{ end }}
   log4j.properties: |+
     log4j.rootLogger=INFO, file

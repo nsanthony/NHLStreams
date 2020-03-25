@@ -1,3 +1,4 @@
+{{- if (eq .Values.zookeeper.useZookeeper true) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -59,4 +60,4 @@ spec:
             path: log4j.properties
           - key: zoo.cfg
             path: zoo.cfg
-
+{{ end }}

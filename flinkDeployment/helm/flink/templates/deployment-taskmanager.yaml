@@ -39,7 +39,7 @@ spec:
         - name: FLINK_CONF_DIR
           value: /opt/flink/conf
         - name: JOB_MANAGER_RPC_ADDRESS
-          value: {{ .Values.flink.jobmanager_rpc_address }}
+          value: {{ .Values.jobmanager.kubeAddress }}
         resources:
           limits:
             cpu: {{ .Values.flink.taskmanager.slots }}
@@ -53,7 +53,7 @@ spec:
       volumes:
       - name: flink-config-volume
         configMap:
-          name: flink-config
+          name: flink-taskmanager-config
           items:
           - key: flink-conf.yaml
             path: flink-conf.yaml
