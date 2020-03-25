@@ -4,8 +4,9 @@ import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
+import streamprocessor.filterstream.maps.CountCharacters;
 import streamprocessor.filterstream.source.GeneratedData;
-import streamprocessor.filterstream.source.TransformStrings;
+import streamprocessor.filterstream.maps.TransformStrings;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,11 +21,13 @@ public class FilterStream {
 
         DataStream<String> generateData = env.addSource(new GeneratedData());
 
-        DataStream<String> countData = new TransformStrings<String, String>(generateData).transformString();
+        DataStream<String> transformedStrings = generateData
+                .map(new TransformStrings());
 
+        DataStream<Integer> countChars = transformedStrings
+                .map(new CountCharacters());
 
-        countData.print();
-
+        countChars.print();
         try {
             env.execute("Appending Strings Job");
         } catch (Exception e) {
@@ -32,8 +35,4 @@ public class FilterStream {
             e.printStackTrace();
         }
     }
-
-
-
-
 }

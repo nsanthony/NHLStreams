@@ -60,7 +60,7 @@ jar {
 }
 
 group = 'NHLStreams'
-version = '0.0.1'
+version = '0.1.0'
 description = 'NHL data scraper & processor in NRT'
 sourceCompatibility = '1.8'
 
