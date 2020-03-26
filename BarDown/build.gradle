@@ -1,0 +1,101 @@
+buildscript {
+    repositories {
+        jcenter() // this applies only to the Gradle 'Shadow' plugin
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
+    }
+}
+
+
+plugins {
+    id 'java'
+    id 'application'
+    // shadow plugin to produce fat JARs
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
+}
+
+
+group = 'com.nhlstreams'
+version = '0.1.0'
+mainClassName = 'com.nhlstreams.BarDown'
+description = 'NHL data processor in NRT from NifiScraper'
+
+ext {
+    javaVersion = '1.8'
+    flinkVersion = '1.10.0'
+    scalaBinaryVersion = '2.11'
+    slf4jVersion = '1.7.7'
+    log4jVersion = '1.2.17'
+}
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+
+applicationDefaultJvmArgs = ["-Dlog4j.configuration=log4j.properties"]
+
+//task wrapper(type: Wrapper) {
+//    gradleVersion = '6.0.1'
+//}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven { url "https://repository.apache.org/content/repositories/snapshots/" }
+}
+
+configurations {
+    flinkShadowJar // dependencies which go into the shadowJar
+
+    // always exclude these (also from transitive dependencies) since they are provided by Flink
+//    flinkShadowJar.exclude group: 'org.apache.flink', module: 'force-shading'
+    flinkShadowJar.exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    flinkShadowJar.exclude group: 'org.slf4j'
+    flinkShadowJar.exclude group: 'log4j'
+}
+
+
+dependencies {
+    compile "org.apache.flink:flink-java:${flinkVersion}"
+    compile "org.apache.flink:flink-streaming-java_${scalaBinaryVersion}:${flinkVersion}"
+
+    compile "log4j:log4j:${log4jVersion}"
+    compile "org.slf4j:slf4j-log4j12:${slf4jVersion}"
+
+    flinkShadowJar 'org.apache.flink:flink-connector-nifi_2.11:1.10.0'
+    flinkShadowJar 'org.apache.flink:flink-connector-nifi_2.11:1.9.0'
+    flinkShadowJar 'org.apache.nifi:nifi-site-to-site-client:1.11.4'
+    flinkShadowJar 'com.google.code.gson:gson:2.8.5'
+}
+
+
+sourceSets {
+    main.compileClasspath += configurations.flinkShadowJar
+    main.runtimeClasspath += configurations.flinkShadowJar
+
+    test.compileClasspath += configurations.flinkShadowJar
+    test.runtimeClasspath += configurations.flinkShadowJar
+
+    javadoc.classpath += configurations.flinkShadowJar
+}
+
+
+run.classpath = sourceSets.main.runtimeClasspath
+
+jar {
+    manifest {
+        attributes 'Built-By': System.getProperty('user.name'),
+                'Build-Jdk': System.getProperty('java.version')
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.flinkShadowJar]
+}
+
+
+
