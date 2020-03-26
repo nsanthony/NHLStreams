@@ -19,7 +19,7 @@ plugins {
 group = 'com.nhlstreams'
 version = '0.1.0'
 mainClassName = 'com.nhlstreams.BarDown'
-description = 'NHL data scraper & processor in NRT'
+description = 'NHL data processor in NRT from NifiScraper'
 
 ext {
     javaVersion = '1.8'

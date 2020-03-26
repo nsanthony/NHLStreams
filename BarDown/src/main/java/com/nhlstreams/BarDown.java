@@ -1,6 +1,7 @@
 package com.nhlstreams;
 
 import com.google.gson.Gson;
+import com.nhlstreams.source.NifiBarDownDataStream;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
@@ -13,7 +14,6 @@ import org.apache.flink.streaming.connectors.nifi.NiFiSource;
 
 import org.apache.nifi.remote.client.SiteToSiteClient;
 import org.apache.nifi.remote.client.SiteToSiteClientConfig;
-import org.apache.nifi.remote.client.socket.SocketClient;
 
 import com.nhlstreams.map.ParseNHLJson;
 
@@ -32,12 +32,12 @@ public class BarDown {
 
         try {
             SiteToSiteClientConfig nifiConfig = new SiteToSiteClient.Builder()
-                    .url("http://192.168.1.39:9090/nifi")
-                    .portIdentifier("ce4c4909-7299-1c20-8730-0077daf72357")
+                    .url("http://192.168.1.39:8080/nifi")
+                    .portIdentifier("7c6548e9-acc8-31c1-8201-5942e1cde3ac")
                     .requestBatchCount(5)
                     .buildConfig();
 
-            SourceFunction<NiFiDataPacket> nifiSource = new NiFiSource(nifiConfig);
+            SourceFunction<NiFiDataPacket> nifiSource = new NifiBarDownDataStream(nifiConfig);
 
             DataStreamSource<NiFiDataPacket> scrapeData = env.addSource(nifiSource);
 
