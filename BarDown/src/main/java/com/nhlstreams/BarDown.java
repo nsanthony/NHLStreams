@@ -5,10 +5,12 @@ import com.nhlstreams.source.NifiBarDownDataStream;
 import org.apache.flink.api.java.utils.ParameterTool;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
+import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 
+import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.nifi.NiFiDataPacket;
 import org.apache.flink.streaming.connectors.nifi.NiFiSource;
 
@@ -41,7 +43,10 @@ public class BarDown {
 
             DataStreamSource<NiFiDataPacket> scrapeData = env.addSource(nifiSource);
 
-            scrapeData.print();
+
+            SingleOutputStreamOperator<Gson> convertJsonToStream = scrapeData.map(new ParseNHLJson());
+
+            convertJsonToStream.timeWindowAll(Time.seconds(1000));
 
             env.execute("NHL Data Scraping");
         } catch (Exception e) {
