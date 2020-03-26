@@ -11,7 +11,6 @@ import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.apache.flink.streaming.connectors.nifi.NiFiDataPacket;
 import org.apache.flink.streaming.connectors.nifi.NiFiSource;
 
-import org.apache.nifi.remote.client.SiteToSiteClientConfig;
 import org.apache.nifi.remote.client.socket.SocketClient;
 
 import streamprocessor.filterstream.map.ParseNHLJson;
