@@ -3,7 +3,6 @@ buildscript {
         jcenter() // this applies only to the Gradle 'Shadow' plugin
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
     }
 }
 
@@ -12,12 +11,11 @@ plugins {
     id 'java'
     id 'application'
     id 'maven-publish'
-    id 'com.github.johnrengelman.shadow' version '5.0.0'
 }
+mainClassName = 'NHLStreams.BarDown'
+
 apply plugin:'java'
 apply plugin: 'application'
-mainClassName = 'streamprocessor.filterstream.FilterStream'
-apply plugin: 'com.github.johnrengelman.shadow'
 
 
 
@@ -28,20 +26,11 @@ repositories {
         url = "https://repository.apache.org/content/repositories/snapshots/"
     }
 }
-configurations {
-    flinkShadowJar // dependencies which go into the shadowJar
-
-    // always exclude these (also from transitive dependencies) since they are provided by Flink
-    flinkShadowJar.exclude group: 'org.apache.flink', module: 'force-shading'
-    flinkShadowJar.exclude group: 'com.google.code.findbugs', module: 'jsr305'
-    flinkShadowJar.exclude group: 'org.slf4j'
-    flinkShadowJar.exclude group: 'log4j'
-}
 
 dependencies {
-//    compile 'org.apache.flink:flink-connector-nifi_2.11:1.10.0'
-    compile 'org.slf4j:slf4j-log4j12:1.7.7'
-    compile 'log4j:log4j:1.2.17'
+    compile 'org.apache.flink:flink-connector-nifi_2.11:1.10.0'
+    runtimeOnly 'org.slf4j:slf4j-log4j12:1.7.7'
+    runtimeOnly 'log4j:log4j:1.2.17'
     compile 'org.apache.flink:flink-java:1.9.0'
     compile 'org.apache.flink:flink-streaming-java_2.11:1.9.0'
     compile 'org.apache.flink:flink-connector-nifi_2.11:1.9.0'
@@ -52,13 +41,13 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Built-By': System.getProperty('user.name'),
-                'Build-Jdk': System.getProperty('java.version')
+        attributes(
+                'Main-Class': 'NHLStreams.BarDown'
+        )
     }
-}
-
-shadowJar {
-    configurations = [project.configurations.flinkShadowJar]
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 
