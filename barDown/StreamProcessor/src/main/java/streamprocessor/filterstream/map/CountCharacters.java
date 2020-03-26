@@ -1,10 +1,6 @@
-package streamprocessor.filterstream.maps;
+package streamprocessor.filterstream.map;
 
-import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.util.Collector;
-import scala.Tuple1;
-import scala.Tuple2;
 
 public class CountCharacters implements MapFunction<String, Integer> {
 

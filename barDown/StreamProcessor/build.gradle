@@ -3,7 +3,7 @@ buildscript {
         jcenter() // this applies only to the Gradle 'Shadow' plugin
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
     }
 }
 
@@ -12,12 +12,12 @@ plugins {
     id 'java'
     id 'application'
     id 'maven-publish'
-//    id 'com.github.johnrengelman.shadow' version '2.0.4'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
 }
-mainClassName = 'streamprocessor.filterstream.FilterStream'
 apply plugin:'java'
-//apply plugin: 'application'
-
+apply plugin: 'application'
+mainClassName = 'streamprocessor.filterstream.FilterStream'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 
 
@@ -29,36 +29,39 @@ repositories {
         url = "https://repository.apache.org/content/repositories/snapshots/"
     }
 }
-//configurations {
-//    flinkShadowJar // dependencies which go into the shadowJar
-//
-//    // always exclude these (also from transitive dependencies) since they are provided by Flink
-//    flinkShadowJar.exclude group: 'org.apache.flink', module: 'force-shading'
-//    flinkShadowJar.exclude group: 'com.google.code.findbugs', module: 'jsr305'
-//    flinkShadowJar.exclude group: 'org.slf4j'
-//    flinkShadowJar.exclude group: 'log4j'
-//}
+configurations {
+    flinkShadowJar // dependencies which go into the shadowJar
+
+    // always exclude these (also from transitive dependencies) since they are provided by Flink
+    flinkShadowJar.exclude group: 'org.apache.flink', module: 'force-shading'
+    flinkShadowJar.exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    flinkShadowJar.exclude group: 'org.slf4j'
+    flinkShadowJar.exclude group: 'log4j'
+}
 
 dependencies {
-    implementation 'org.apache.flink:flink-connector-kafka_2.11:1.9.0'
-    runtimeOnly 'org.slf4j:slf4j-log4j12:1.7.7'
-    runtimeOnly 'log4j:log4j:1.2.17'
-    compileOnly 'org.apache.flink:flink-java:1.9.0'
-    compileOnly 'org.apache.flink:flink-streaming-java_2.11:1.9.0'
-    compileOnly 'org.apache.flink:flink-connector-nifi_2.11:1.9.0'
+    compile 'org.apache.flink:flink-connector-nifi_2.11:1.10.0'
+    compile 'org.slf4j:slf4j-log4j12:1.7.7'
+    compile 'log4j:log4j:1.2.17'
+    compile 'org.apache.flink:flink-java:1.9.0'
+    compile 'org.apache.flink:flink-streaming-java_2.11:1.9.0'
+    compile 'org.apache.flink:flink-connector-nifi_2.11:1.9.0'
+    compile 'org.apache.nifi:nifi-site-to-site-client:1.6.0'
     compile 'com.google.code.gson:gson:2.8.5'
 }
 
+
 jar {
     manifest {
-        attributes(
-                'Main-Class': 'streamprocessor.filterstream.FilterStream'
-        )
-    }
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        attributes 'Built-By': System.getProperty('user.name'),
+                'Build-Jdk': System.getProperty('java.version')
     }
 }
+
+shadowJar {
+    configurations = [project.configurations.flinkShadowJar]
+}
+
 
 group = 'NHLStreams'
 version = '0.1.0'

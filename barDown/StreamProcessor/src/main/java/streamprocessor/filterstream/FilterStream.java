@@ -1,14 +1,21 @@
 package streamprocessor.filterstream;
 
+import com.google.gson.Gson;
 import org.apache.flink.api.java.utils.ParameterTool;
-import org.apache.flink.shaded.jackson2.com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.flink.streaming.api.datastream.DataStream;
+import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
-import org.apache.flink.streaming.util.serialization.JSONKeyValueDeserializationSchema;
+import org.apache.flink.streaming.api.functions.source.SourceFunction;
 
-import java.util.Properties;
+import org.apache.flink.streaming.connectors.nifi.NiFiDataPacket;
+import org.apache.flink.streaming.connectors.nifi.NiFiSource;
+
+import org.apache.nifi.remote.client.SiteToSiteClientConfig;
+import org.apache.nifi.remote.client.socket.SocketClient;
+
+import streamprocessor.filterstream.map.ParseNHLJson;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,29 +29,25 @@ public class FilterStream {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.getConfig().setGlobalJobParameters(params);
 
+        try {
+            SocketClient.Builder builder = new SocketClient.Builder();
 
-        if(params.has("url")) {
-            String apiURL = params.get("url").toString();
+            SourceFunction<NiFiDataPacket> nifiSource = new NiFiSource(
+                    builder.url("http://192.168.1.39:9090/nifi")
+                            .portName("NHLLogs for Analysis")
+                            .requestBatchCount(1)
+                            .buildConfig());
 
+            DataStreamSource<NiFiDataPacket> scrapeData = env.addSource(nifiSource);
 
-            LOG.log(Level.INFO, "Got this url from the startup parameters: " + apiURL);
+            DataStream<Gson> nhlJson = scrapeData.map(new ParseNHLJson());
 
-            JSONKeyValueDeserializationSchema jsonDeserialization = new JSONKeyValueDeserializationSchema(true);
-            Properties props = new Properties();
+            nhlJson.print();
 
-            FlinkKafkaConsumer<ObjectNode> nhlKafkaConsumer = new FlinkKafkaConsumer<>("testTopic", jsonDeserialization, props);
-
-            DataStream<ObjectNode> scrapeData = env.addSource(nhlKafkaConsumer);
-            scrapeData.print();
-
-            try {
-                env.execute("NHL Data Scraping");
-            } catch (Exception e) {
-                LOG.log(Level.WARNING, "Something went very wrong....", e);
-                e.printStackTrace();
-            }
-        }else {
-            LOG.log(Level.WARNING, "Did not get the runtime parameter needed to scrape data");
+            env.execute("NHL Data Scraping");
+        } catch (Exception e) {
+            LOG.log(Level.WARNING, "Something went very wrong....", e);
+            e.printStackTrace();
         }
     }
 }

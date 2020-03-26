@@ -1,7 +1,6 @@
-package streamprocessor.filterstream.maps;
+package streamprocessor.filterstream.map;
 
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.kafka.common.utils.Time;
 
 import java.nio.charset.Charset;
 import java.util.Random;
