@@ -1,1 +1,2 @@
 Need to create Nifi proxy so that BarDown can connect to the port to get the data out.
+Impliment stateful backend of Flink
