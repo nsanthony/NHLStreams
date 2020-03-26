@@ -1,4 +1,4 @@
-package NHLStreams.source;
+package com.nhlstreams.source;
 
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.functions.source.RichSourceFunction;

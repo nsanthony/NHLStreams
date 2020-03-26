@@ -1,4 +1,4 @@
-package NHLStreams.map;
+package com.nhlstreams.map;
 
 import com.google.gson.Gson;
 import org.apache.flink.api.common.functions.MapFunction;

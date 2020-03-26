@@ -1,4 +1,4 @@
-package NHLStreams;
+package com.nhlstreams;
 
 import com.google.gson.Gson;
 import org.apache.flink.api.java.utils.ParameterTool;
@@ -11,9 +11,11 @@ import org.apache.flink.streaming.api.functions.source.SourceFunction;
 import org.apache.flink.streaming.connectors.nifi.NiFiDataPacket;
 import org.apache.flink.streaming.connectors.nifi.NiFiSource;
 
+import org.apache.nifi.remote.client.SiteToSiteClient;
+import org.apache.nifi.remote.client.SiteToSiteClientConfig;
 import org.apache.nifi.remote.client.socket.SocketClient;
 
-import NHLStreams.map.ParseNHLJson;
+import com.nhlstreams.map.ParseNHLJson;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,19 +31,17 @@ public class BarDown {
         env.getConfig().setGlobalJobParameters(params);
 
         try {
-            SocketClient.Builder builder = new SocketClient.Builder();
+            SiteToSiteClientConfig nifiConfig = new SiteToSiteClient.Builder()
+                    .url("http://192.168.1.39:9090/nifi")
+                    .portIdentifier("ce4c4909-7299-1c20-8730-0077daf72357")
+                    .requestBatchCount(5)
+                    .buildConfig();
 
-            SourceFunction<NiFiDataPacket> nifiSource = new NiFiSource(
-                    builder.url("http://192.168.1.39:9090/nifi")
-                            .portName("NHLLogs for Analysis")
-                            .requestBatchCount(1)
-                            .buildConfig());
+            SourceFunction<NiFiDataPacket> nifiSource = new NiFiSource(nifiConfig);
 
             DataStreamSource<NiFiDataPacket> scrapeData = env.addSource(nifiSource);
 
-            DataStream<Gson> nhlJson = scrapeData.map(new ParseNHLJson());
-
-            nhlJson.print();
+            scrapeData.print();
 
             env.execute("NHL Data Scraping");
         } catch (Exception e) {
