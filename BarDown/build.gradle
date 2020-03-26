@@ -1,0 +1,72 @@
+buildscript {
+    repositories {
+        jcenter() // this applies only to the Gradle 'Shadow' plugin
+    }
+    dependencies {
+    }
+}
+
+
+plugins {
+    id 'java'
+    id 'application'
+    id 'maven-publish'
+}
+mainClassName = 'NHLStreams.BarDown'
+
+apply plugin:'java'
+apply plugin: 'application'
+
+
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url = "https://repository.apache.org/content/repositories/snapshots/"
+    }
+}
+
+dependencies {
+    compile 'org.apache.flink:flink-connector-nifi_2.11:1.10.0'
+    runtimeOnly 'org.slf4j:slf4j-log4j12:1.7.7'
+    runtimeOnly 'log4j:log4j:1.2.17'
+    compile 'org.apache.flink:flink-java:1.9.0'
+    compile 'org.apache.flink:flink-streaming-java_2.11:1.9.0'
+    compile 'org.apache.flink:flink-connector-nifi_2.11:1.9.0'
+    compile 'org.apache.nifi:nifi-site-to-site-client:1.11.4'
+    compile 'com.google.code.gson:gson:2.8.5'
+}
+
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'NHLStreams.BarDown'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+
+group = 'NHLStreams'
+version = '0.1.0'
+description = 'NHL data scraper & processor in NRT'
+sourceCompatibility = '1.8'
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+
