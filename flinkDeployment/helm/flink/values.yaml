@@ -41,7 +41,7 @@ flink:
     heapMB: 1024
     replicas: 1
   taskmanager:
-    heapMB: 1024
+    heapMB: 2048
     replicas: 4
     slots: 2
   ## Other config options for flink-conf.yaml
