@@ -20,6 +20,7 @@ import org.apache.nifi.remote.client.SiteToSiteClient;
 import org.apache.nifi.remote.client.SiteToSiteClientConfig;
 
 import com.nhlstreams.map.ParseNHLJson;
+import org.apache.pulsar.client.impl.conf.ClientConfigurationData;
 import org.apache.pulsar.shade.org.codehaus.jackson.schema.JsonSchema;
 
 import java.util.logging.Level;
@@ -37,25 +38,18 @@ public class BarDown {
 
         try {
 
-            PulsarSourceBuilder<String> pulsarSourceBuilder = PulsarSourceBuilder.builder(new SimpleStringSchema());
+            PulsarSourceBuilder<String> pulsarSourceBuilder = PulsarSourceBuilder
+                    .builder(new SimpleStringSchema())
+                    .serviceUrl("http://192.168.1.39:30002")
+                    .topic("persistent://nifi/NHLStreams/game-logs")
+                    .subscriptionName("BarDown");
 
             SourceFunction<String> pulsarSource = pulsarSourceBuilder.build();
 
             DataStream<String> pulsarStream = env.addSource(pulsarSource);
 
 
-            SiteToSiteClientConfig nifiConfig = new SiteToSiteClient.Builder()
-                    .url("http://192.168.1.39:8080/nifi")
-                    .portIdentifier("7c6548e9-acc8-31c1-8201-5942e1cde3ac")
-                    .requestBatchCount(5)
-                    .buildConfig();
-
-            SourceFunction<NiFiDataPacket> nifiSource = new NifiBarDownDataStream(nifiConfig);
-
-            DataStreamSource<NiFiDataPacket> scrapeData = env.addSource(nifiSource);
-
-
-            SingleOutputStreamOperator<Gson> convertJsonToStream = scrapeData.map(new ParseNHLJson());
+            SingleOutputStreamOperator<Gson> convertJsonToStream = pulsarStream.map(new ParseNHLJson());
 
             convertJsonToStream.timeWindowAll(Time.seconds(1000));
 
