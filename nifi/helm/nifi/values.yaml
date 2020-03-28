@@ -1,0 +1,22 @@
+resources:
+  zookeeper:
+    requests:
+      cpu: 1000m
+      memory: 3500Mi
+  nifi:
+    requests:
+      cpu: 1000m
+      memory: 2000Mi
+zookeeper:
+  clusterName: nhlstreams
+  image:
+    name: 'bitnami/zookeeper'
+    tag: 'latest'
+    imagePullPolicy: IfNotPresent
+nifi:
+  clusterName: nhlstreams
+  image: 
+    name: 'streamlio/nifi'
+    tag: '1.9.0'
+    imagePullPolicy: IfNotPresent
+  replicas: 1

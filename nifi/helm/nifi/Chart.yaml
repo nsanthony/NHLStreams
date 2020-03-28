@@ -1,0 +1,9 @@
+apiVersion: v1
+description: BarDown nifi helm deployement
+name: nifi
+version: 1.9.0
+home: https://BarDown.com
+sources:
+Maintainers:
+- name: Nathan Anthony
+  email: nsanthony@gmail.com
