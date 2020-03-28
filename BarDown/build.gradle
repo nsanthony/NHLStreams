@@ -70,6 +70,7 @@ dependencies {
     flinkShadowJar 'org.apache.flink:flink-connector-nifi_2.11:1.9.0'
     flinkShadowJar 'org.apache.nifi:nifi-site-to-site-client:1.11.4'
     flinkShadowJar 'com.google.code.gson:gson:2.8.5'
+    flinkShadowJar 'org.apache.pulsar:pulsar-flink:2.5.0'
 }
 
 
