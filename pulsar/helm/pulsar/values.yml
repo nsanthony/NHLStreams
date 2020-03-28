@@ -287,6 +287,10 @@ proxy:
       port: 6650
       nodePort: 30002
       protocol: TCP
+    - name: manager
+      port: 9527
+      nodePort: 30006
+      protocol: TCP
   ## Proxy PodDisruptionBudget
   ## templates/proxy-pdb.yaml
   ##
@@ -508,11 +512,11 @@ pulsar_manager:
   ## templates/pulsar-manager-service.yaml
   ##
   service:
-    type: NodePort
+    type: LoadBalancer
     annotations: {}
     ports:
       - name: server
-        port: 9527:30006
+        port: 9527
   admin:
     user: pulsar
     password: pulsar
