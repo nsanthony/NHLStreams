@@ -1,0 +1,902 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<template encoding-version="1.2">
+    <description></description>
+    <groupId>6580a2cd-0171-1000-39fd-02e3c78432fb</groupId>
+    <name>NHLStreams-v0.3.0</name>
+    <snippet>
+        <connections>
+            <id>2f50891f-0144-31a4-0000-000000000000</id>
+            <parentGroupId>ac98e779-0ab9-35c5-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>ac98e779-0ab9-35c5-0000-000000000000</groupId>
+                <id>0edb0753-b113-3789-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>ac98e779-0ab9-35c5-0000-000000000000</groupId>
+                <id>0a13a5eb-d972-39f1-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>3fa0d67b-a205-3e60-0000-000000000000</id>
+            <parentGroupId>ac98e779-0ab9-35c5-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>ac98e779-0ab9-35c5-0000-000000000000</groupId>
+                <id>0a13a5eb-d972-39f1-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>success</selectedRelationships>
+            <source>
+                <groupId>ac98e779-0ab9-35c5-0000-000000000000</groupId>
+                <id>e680c60d-1c2f-3a2f-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <connections>
+            <id>e491b545-d071-3ae1-0000-000000000000</id>
+            <parentGroupId>ac98e779-0ab9-35c5-0000-000000000000</parentGroupId>
+            <backPressureDataSizeThreshold>1 GB</backPressureDataSizeThreshold>
+            <backPressureObjectThreshold>10000</backPressureObjectThreshold>
+            <destination>
+                <groupId>ac98e779-0ab9-35c5-0000-000000000000</groupId>
+                <id>b2231e42-7e70-3196-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </destination>
+            <flowFileExpiration>0 sec</flowFileExpiration>
+            <labelIndex>1</labelIndex>
+            <loadBalanceCompression>DO_NOT_COMPRESS</loadBalanceCompression>
+            <loadBalancePartitionAttribute></loadBalancePartitionAttribute>
+            <loadBalanceStatus>LOAD_BALANCE_NOT_CONFIGURED</loadBalanceStatus>
+            <loadBalanceStrategy>DO_NOT_LOAD_BALANCE</loadBalanceStrategy>
+            <name></name>
+            <selectedRelationships>Response</selectedRelationships>
+            <source>
+                <groupId>ac98e779-0ab9-35c5-0000-000000000000</groupId>
+                <id>0edb0753-b113-3789-0000-000000000000</id>
+                <type>PROCESSOR</type>
+            </source>
+            <zIndex>0</zIndex>
+        </connections>
+        <controllerServices>
+            <id>ddfd9015-6296-3d1a-0000-000000000000</id>
+            <parentGroupId>ac98e779-0ab9-35c5-0000-000000000000</parentGroupId>
+            <bundle>
+                <artifact>nifi-pulsar-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.9.0</version>
+            </bundle>
+            <comments></comments>
+            <descriptors>
+                <entry>
+                    <key>PULSAR_SERVICE_URL</key>
+                    <value>
+                        <name>PULSAR_SERVICE_URL</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>AUTHENTICATION_SERVICE</key>
+                    <value>
+                        <identifiesControllerService>org.apache.nifi.pulsar.auth.PulsarClientAuthenticationService</identifiesControllerService>
+                        <name>AUTHENTICATION_SERVICE</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>CONCURRENT_LOOKUP_REQUESTS</key>
+                    <value>
+                        <name>CONCURRENT_LOOKUP_REQUESTS</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>CONNECTIONS_PER_BROKER</key>
+                    <value>
+                        <name>CONNECTIONS_PER_BROKER</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>IO_THREADS</key>
+                    <value>
+                        <name>IO_THREADS</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>KEEP_ALIVE_INTERVAL</key>
+                    <value>
+                        <name>KEEP_ALIVE_INTERVAL</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>LISTENER_THREADS</key>
+                    <value>
+                        <name>LISTENER_THREADS</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>MAXIMUM_LOOKUP_REQUESTS</key>
+                    <value>
+                        <name>MAXIMUM_LOOKUP_REQUESTS</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>MAXIMUM_REJECTED_REQUESTS</key>
+                    <value>
+                        <name>MAXIMUM_REJECTED_REQUESTS</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>OPERATION_TIMEOUT</key>
+                    <value>
+                        <name>OPERATION_TIMEOUT</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>STATS_INTERVAL</key>
+                    <value>
+                        <name>STATS_INTERVAL</name>
+                    </value>
+                </entry>
+                <entry>
+                    <key>USE_TCP_NO_DELAY</key>
+                    <value>
+                        <name>USE_TCP_NO_DELAY</name>
+                    </value>
+                </entry>
+            </descriptors>
+            <name>StandardPulsarClientService</name>
+            <persistsState>false</persistsState>
+            <properties>
+                <entry>
+                    <key>PULSAR_SERVICE_URL</key>
+                    <value>pulsar-broker.default.svc.cluster.local:6650</value>
+                </entry>
+                <entry>
+                    <key>AUTHENTICATION_SERVICE</key>
+                </entry>
+                <entry>
+                    <key>CONCURRENT_LOOKUP_REQUESTS</key>
+                    <value>5000</value>
+                </entry>
+                <entry>
+                    <key>CONNECTIONS_PER_BROKER</key>
+                    <value>1</value>
+                </entry>
+                <entry>
+                    <key>IO_THREADS</key>
+                    <value>1</value>
+                </entry>
+                <entry>
+                    <key>KEEP_ALIVE_INTERVAL</key>
+                    <value>30 sec</value>
+                </entry>
+                <entry>
+                    <key>LISTENER_THREADS</key>
+                    <value>1</value>
+                </entry>
+                <entry>
+                    <key>MAXIMUM_LOOKUP_REQUESTS</key>
+                    <value>50000</value>
+                </entry>
+                <entry>
+                    <key>MAXIMUM_REJECTED_REQUESTS</key>
+                    <value>50</value>
+                </entry>
+                <entry>
+                    <key>OPERATION_TIMEOUT</key>
+                    <value>30 sec</value>
+                </entry>
+                <entry>
+                    <key>STATS_INTERVAL</key>
+                    <value>60 sec</value>
+                </entry>
+                <entry>
+                    <key>USE_TCP_NO_DELAY</key>
+                    <value>false</value>
+                </entry>
+            </properties>
+            <state>ENABLED</state>
+            <type>org.apache.nifi.pulsar.StandardPulsarClientService</type>
+        </controllerServices>
+        <processors>
+            <id>0a13a5eb-d972-39f1-0000-000000000000</id>
+            <parentGroupId>ac98e779-0ab9-35c5-0000-000000000000</parentGroupId>
+            <position>
+                <x>829.0157470703125</x>
+                <y>0.0</y>
+            </position>
+            <bundle>
+                <artifact>nifi-update-attribute-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.9.0</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>Delete Attributes Expression</key>
+                        <value>
+                            <name>Delete Attributes Expression</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Store State</key>
+                        <value>
+                            <name>Store State</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Stateful Variables Initial Value</key>
+                        <value>
+                            <name>Stateful Variables Initial Value</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>canonical-value-lookup-cache-size</key>
+                        <value>
+                            <name>canonical-value-lookup-cache-size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>nhl.url</key>
+                        <value>
+                            <name>nhl.url</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>Delete Attributes Expression</key>
+                    </entry>
+                    <entry>
+                        <key>Store State</key>
+                        <value>Do not store state</value>
+                    </entry>
+                    <entry>
+                        <key>Stateful Variables Initial Value</key>
+                    </entry>
+                    <entry>
+                        <key>canonical-value-lookup-cache-size</key>
+                        <value>100</value>
+                    </entry>
+                    <entry>
+                        <key>nhl.url</key>
+                        <value>http://statsapi.web.nhl.com/api/v1/game/2017020608/feed/live</value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <executionNodeRestricted>false</executionNodeRestricted>
+            <name>UpdateAttribute</name>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>success</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.attributes.UpdateAttribute</type>
+        </processors>
+        <processors>
+            <id>0edb0753-b113-3789-0000-000000000000</id>
+            <parentGroupId>ac98e779-0ab9-35c5-0000-000000000000</parentGroupId>
+            <position>
+                <x>2.88958740234375</x>
+                <y>192.0</y>
+            </position>
+            <bundle>
+                <artifact>nifi-standard-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.9.0</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>HTTP Method</key>
+                        <value>
+                            <name>HTTP Method</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Remote URL</key>
+                        <value>
+                            <name>Remote URL</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>SSL Context Service</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.ssl.SSLContextService</identifiesControllerService>
+                            <name>SSL Context Service</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Connection Timeout</key>
+                        <value>
+                            <name>Connection Timeout</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Read Timeout</key>
+                        <value>
+                            <name>Read Timeout</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Include Date Header</key>
+                        <value>
+                            <name>Include Date Header</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Follow Redirects</key>
+                        <value>
+                            <name>Follow Redirects</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Send</key>
+                        <value>
+                            <name>Attributes to Send</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Basic Authentication Username</key>
+                        <value>
+                            <name>Basic Authentication Username</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Basic Authentication Password</key>
+                        <value>
+                            <name>Basic Authentication Password</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>proxy-configuration-service</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.proxy.ProxyConfigurationService</identifiesControllerService>
+                            <name>proxy-configuration-service</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Proxy Host</key>
+                        <value>
+                            <name>Proxy Host</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Proxy Port</key>
+                        <value>
+                            <name>Proxy Port</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Proxy Type</key>
+                        <value>
+                            <name>Proxy Type</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>invokehttp-proxy-user</key>
+                        <value>
+                            <name>invokehttp-proxy-user</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>invokehttp-proxy-password</key>
+                        <value>
+                            <name>invokehttp-proxy-password</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Put Response Body In Attribute</key>
+                        <value>
+                            <name>Put Response Body In Attribute</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Max Length To Put In Attribute</key>
+                        <value>
+                            <name>Max Length To Put In Attribute</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Digest Authentication</key>
+                        <value>
+                            <name>Digest Authentication</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Always Output Response</key>
+                        <value>
+                            <name>Always Output Response</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Trusted Hostname</key>
+                        <value>
+                            <name>Trusted Hostname</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Add Response Headers to Request</key>
+                        <value>
+                            <name>Add Response Headers to Request</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Content-Type</key>
+                        <value>
+                            <name>Content-Type</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>send-message-body</key>
+                        <value>
+                            <name>send-message-body</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Use Chunked Encoding</key>
+                        <value>
+                            <name>Use Chunked Encoding</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Penalize on "No Retry"</key>
+                        <value>
+                            <name>Penalize on "No Retry"</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>use-etag</key>
+                        <value>
+                            <name>use-etag</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>etag-max-cache-size</key>
+                        <value>
+                            <name>etag-max-cache-size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>ignore-response-content</key>
+                        <value>
+                            <name>ignore-response-content</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>HTTP Method</key>
+                        <value>GET</value>
+                    </entry>
+                    <entry>
+                        <key>Remote URL</key>
+                        <value>${nhl.url}</value>
+                    </entry>
+                    <entry>
+                        <key>SSL Context Service</key>
+                    </entry>
+                    <entry>
+                        <key>Connection Timeout</key>
+                        <value>5 secs</value>
+                    </entry>
+                    <entry>
+                        <key>Read Timeout</key>
+                        <value>15 secs</value>
+                    </entry>
+                    <entry>
+                        <key>Include Date Header</key>
+                        <value>True</value>
+                    </entry>
+                    <entry>
+                        <key>Follow Redirects</key>
+                        <value>True</value>
+                    </entry>
+                    <entry>
+                        <key>Attributes to Send</key>
+                    </entry>
+                    <entry>
+                        <key>Basic Authentication Username</key>
+                    </entry>
+                    <entry>
+                        <key>Basic Authentication Password</key>
+                    </entry>
+                    <entry>
+                        <key>proxy-configuration-service</key>
+                    </entry>
+                    <entry>
+                        <key>Proxy Host</key>
+                    </entry>
+                    <entry>
+                        <key>Proxy Port</key>
+                    </entry>
+                    <entry>
+                        <key>Proxy Type</key>
+                        <value>http</value>
+                    </entry>
+                    <entry>
+                        <key>invokehttp-proxy-user</key>
+                    </entry>
+                    <entry>
+                        <key>invokehttp-proxy-password</key>
+                    </entry>
+                    <entry>
+                        <key>Put Response Body In Attribute</key>
+                    </entry>
+                    <entry>
+                        <key>Max Length To Put In Attribute</key>
+                        <value>256</value>
+                    </entry>
+                    <entry>
+                        <key>Digest Authentication</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>Always Output Response</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>Trusted Hostname</key>
+                    </entry>
+                    <entry>
+                        <key>Add Response Headers to Request</key>
+                        <value>true</value>
+                    </entry>
+                    <entry>
+                        <key>Content-Type</key>
+                        <value>${mime.type}</value>
+                    </entry>
+                    <entry>
+                        <key>send-message-body</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>Use Chunked Encoding</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>Penalize on "No Retry"</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>use-etag</key>
+                        <value>true</value>
+                    </entry>
+                    <entry>
+                        <key>etag-max-cache-size</key>
+                        <value>10MB</value>
+                    </entry>
+                    <entry>
+                        <key>ignore-response-content</key>
+                        <value>false</value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <executionNodeRestricted>false</executionNodeRestricted>
+            <name>InvokeHTTP</name>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>Failure</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>No Retry</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>Original</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>Response</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>Retry</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.standard.InvokeHTTP</type>
+        </processors>
+        <processors>
+            <id>b2231e42-7e70-3196-0000-000000000000</id>
+            <parentGroupId>ac98e779-0ab9-35c5-0000-000000000000</parentGroupId>
+            <position>
+                <x>830.1668619265265</x>
+                <y>194.75073390646708</y>
+            </position>
+            <bundle>
+                <artifact>nifi-pulsar-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.9.0</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>PULSAR_CLIENT_SERVICE</key>
+                        <value>
+                            <identifiesControllerService>org.apache.nifi.pulsar.PulsarClientService</identifiesControllerService>
+                            <name>PULSAR_CLIENT_SERVICE</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>TOPIC</key>
+                        <value>
+                            <name>TOPIC</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>ASYNC_ENABLED</key>
+                        <value>
+                            <name>ASYNC_ENABLED</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>MAX_ASYNC_REQUESTS</key>
+                        <value>
+                            <name>MAX_ASYNC_REQUESTS</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>BATCHING_ENABLED</key>
+                        <value>
+                            <name>BATCHING_ENABLED</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>BATCHING_MAX_MESSAGES</key>
+                        <value>
+                            <name>BATCHING_MAX_MESSAGES</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>BATCH_INTERVAL</key>
+                        <value>
+                            <name>BATCH_INTERVAL</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>BLOCK_IF_QUEUE_FULL</key>
+                        <value>
+                            <name>BLOCK_IF_QUEUE_FULL</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>COMPRESSION_TYPE</key>
+                        <value>
+                            <name>COMPRESSION_TYPE</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>MESSAGE_ROUTING_MODE</key>
+                        <value>
+                            <name>MESSAGE_ROUTING_MODE</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>MESSAGE_DEMARCATOR</key>
+                        <value>
+                            <name>MESSAGE_DEMARCATOR</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>PENDING_MAX_MESSAGES</key>
+                        <value>
+                            <name>PENDING_MAX_MESSAGES</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>PULSAR_CLIENT_SERVICE</key>
+                        <value>ddfd9015-6296-3d1a-0000-000000000000</value>
+                    </entry>
+                    <entry>
+                        <key>TOPIC</key>
+                        <value>persistent://nifi/NHLStreams/game-logs</value>
+                    </entry>
+                    <entry>
+                        <key>ASYNC_ENABLED</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>MAX_ASYNC_REQUESTS</key>
+                        <value>50</value>
+                    </entry>
+                    <entry>
+                        <key>BATCHING_ENABLED</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>BATCHING_MAX_MESSAGES</key>
+                        <value>1000</value>
+                    </entry>
+                    <entry>
+                        <key>BATCH_INTERVAL</key>
+                        <value>10 ms</value>
+                    </entry>
+                    <entry>
+                        <key>BLOCK_IF_QUEUE_FULL</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>COMPRESSION_TYPE</key>
+                        <value>NONE</value>
+                    </entry>
+                    <entry>
+                        <key>MESSAGE_ROUTING_MODE</key>
+                        <value>RoundRobinPartition</value>
+                    </entry>
+                    <entry>
+                        <key>MESSAGE_DEMARCATOR</key>
+                    </entry>
+                    <entry>
+                        <key>PENDING_MAX_MESSAGES</key>
+                        <value>1000</value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>0 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <executionNodeRestricted>false</executionNodeRestricted>
+            <name>PublishPulsar</name>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>failure</name>
+            </relationships>
+            <relationships>
+                <autoTerminate>true</autoTerminate>
+                <name>success</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.pulsar.pubsub.PublishPulsar</type>
+        </processors>
+        <processors>
+            <id>e680c60d-1c2f-3a2f-0000-000000000000</id>
+            <parentGroupId>ac98e779-0ab9-35c5-0000-000000000000</parentGroupId>
+            <position>
+                <x>0.0</x>
+                <y>16.0</y>
+            </position>
+            <bundle>
+                <artifact>nifi-standard-nar</artifact>
+                <group>org.apache.nifi</group>
+                <version>1.9.0</version>
+            </bundle>
+            <config>
+                <bulletinLevel>WARN</bulletinLevel>
+                <comments></comments>
+                <concurrentlySchedulableTaskCount>1</concurrentlySchedulableTaskCount>
+                <descriptors>
+                    <entry>
+                        <key>File Size</key>
+                        <value>
+                            <name>File Size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Batch Size</key>
+                        <value>
+                            <name>Batch Size</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Data Format</key>
+                        <value>
+                            <name>Data Format</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>Unique FlowFiles</key>
+                        <value>
+                            <name>Unique FlowFiles</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>generate-ff-custom-text</key>
+                        <value>
+                            <name>generate-ff-custom-text</name>
+                        </value>
+                    </entry>
+                    <entry>
+                        <key>character-set</key>
+                        <value>
+                            <name>character-set</name>
+                        </value>
+                    </entry>
+                </descriptors>
+                <executionNode>ALL</executionNode>
+                <lossTolerant>false</lossTolerant>
+                <penaltyDuration>30 sec</penaltyDuration>
+                <properties>
+                    <entry>
+                        <key>File Size</key>
+                        <value>0B</value>
+                    </entry>
+                    <entry>
+                        <key>Batch Size</key>
+                        <value>1</value>
+                    </entry>
+                    <entry>
+                        <key>Data Format</key>
+                        <value>Text</value>
+                    </entry>
+                    <entry>
+                        <key>Unique FlowFiles</key>
+                        <value>false</value>
+                    </entry>
+                    <entry>
+                        <key>generate-ff-custom-text</key>
+                    </entry>
+                    <entry>
+                        <key>character-set</key>
+                        <value>UTF-8</value>
+                    </entry>
+                </properties>
+                <runDurationMillis>0</runDurationMillis>
+                <schedulingPeriod>1 sec</schedulingPeriod>
+                <schedulingStrategy>TIMER_DRIVEN</schedulingStrategy>
+                <yieldDuration>1 sec</yieldDuration>
+            </config>
+            <executionNodeRestricted>false</executionNodeRestricted>
+            <name>GenerateFlowFile</name>
+            <relationships>
+                <autoTerminate>false</autoTerminate>
+                <name>success</name>
+            </relationships>
+            <state>RUNNING</state>
+            <style/>
+            <type>org.apache.nifi.processors.standard.GenerateFlowFile</type>
+        </processors>
+    </snippet>
+    <timestamp>04/10/2020 20:01:00 UTC</timestamp>
+</template>
