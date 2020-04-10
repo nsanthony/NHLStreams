@@ -51,7 +51,7 @@ public class BarDown {
 
             DataStream<String> pulsarStream = env.addSource(pulsarSource);
 
-            OutputTag<String> newOutputTag = new OutputTag<>("100032482342");
+            OutputTag<String> newOutputTag = new OutputTag<String>("new-tag"){};
 
             AllWindowedStream<String, GlobalWindow> countWindowOfStream = pulsarStream.countWindowAll(Long.getLong("10000")).sideOutputLateData(newOutputTag);
 
