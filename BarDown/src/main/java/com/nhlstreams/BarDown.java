@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.nhlstreams.source.NifiBarDownDataStream;
 import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.java.utils.ParameterTool;
+import org.apache.flink.streaming.api.datastream.AllWindowedStream;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
@@ -12,10 +13,12 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.source.SourceFunction;
 
 import org.apache.flink.streaming.api.windowing.time.Time;
+import org.apache.flink.streaming.api.windowing.windows.GlobalWindow;
 import org.apache.flink.streaming.connectors.nifi.NiFiDataPacket;
 import org.apache.flink.streaming.connectors.nifi.NiFiSource;
 
 import org.apache.flink.streaming.connectors.pulsar.PulsarSourceBuilder;
+import org.apache.flink.util.OutputTag;
 import org.apache.nifi.remote.client.SiteToSiteClient;
 import org.apache.nifi.remote.client.SiteToSiteClientConfig;
 
@@ -48,10 +51,18 @@ public class BarDown {
 
             DataStream<String> pulsarStream = env.addSource(pulsarSource);
 
+            OutputTag<String> newOutputTag = new OutputTag<>("100032482342");
 
-            SingleOutputStreamOperator<Gson> convertJsonToStream = pulsarStream.map(new ParseNHLJson());
+            AllWindowedStream<String, GlobalWindow> countWindowOfStream = pulsarStream.countWindowAll(Long.getLong("10000")).sideOutputLateData(newOutputTag);
 
-            convertJsonToStream.timeWindowAll(Time.seconds(1000));
+            countWindowOfStream.sum(1).print();
+
+
+
+
+//            SingleOutputStreamOperator<Gson> convertJsonToStream = pulsarStream.map(new ParseNHLJson());
+//
+//            convertJsonToStream.timeWindowAll(Time.seconds(1000));
 
             env.execute("NHL Data Scraping");
         } catch (Exception e) {
