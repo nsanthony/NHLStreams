@@ -56,7 +56,10 @@ public class BarDown {
 
             DataStream<String> pulsarStream = env.addSource(pulsarSource);
 
-            pulsarStream.addSink(pulsarSink);
+
+            DataStream<String> passThroughStream = pulsarStream.forward();
+
+            passThroughStream.addSink(pulsarSink);
 
 
 
