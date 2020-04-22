@@ -12,6 +12,10 @@ spec:
     port: 6124
   - name: ui
     port: 8081
+  - port: {{ .Values.flink.jobmanager.syncPort }}
+    targetPort: ha
+    protocol: TCP
+    name: ha
   selector:
     app: {{ .Values.flink.clusterName }}
     component: {{ .Values.flink.clusterName }}-jobmanager
