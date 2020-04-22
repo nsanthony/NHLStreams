@@ -739,7 +739,7 @@
                     </entry>
                     <entry>
                         <key>TOPIC</key>
-                        <value>persistent://nifi/NHLStreams/game-logs</value>
+                        <value>persistent://NHLStreams/games/game-logs</value>
                     </entry>
                     <entry>
                         <key>ASYNC_ENABLED</key>
