@@ -1,12 +1,13 @@
 {{- if (eq .Values.zookeeper.useZookeeper true) }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ .Values.flink.clusterName }}-zookeeper
 spec:
+  serviceName: {{ .Values.flink.clusterName }}-zookeeper 
   replicas: {{ .Values.zookeeper.replicas }}
   selector:
-    matchLabels:
+    matchLabels: 
       app: {{ .Values.flink.clusterName }}
       component: {{ .Values.flink.clusterName }}-zookeeper
   template:

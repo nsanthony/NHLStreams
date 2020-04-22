@@ -14,6 +14,11 @@ spec:
         app: {{ .Values.flink.clusterName }}
         component: {{ .Values.flink.clusterName }}-jobmanager
     spec:
+      initContainers:
+      - name: wait-zookeeper-ready
+        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        command: ["sh", "-c", "until nslookup flink-zookeeper.default.svc.cluster.local; do echo waiting for myservice; sleep 3; done"]
       containers:
       - name: jobmanager
         image: {{ .Values.image }}:{{ .Values.imageTag }}
@@ -35,16 +40,18 @@ spec:
           name: blob
         - containerPort: 8081
           name: ui
-        livenessProbe:
-          tcpSocket:
-            port: 8081
-          initialDelaySeconds: 30
-          periodSeconds: 60
+        - containerPort: 6150
+          name: ha
+          #        livenessProbe:
+          #          tcpSocket:
+          #            port: 6123
+          #          initialDelaySeconds: 30
+          #          periodSeconds: 60
         env:
         - name: FLINK_CONF_DIR
           value: /opt/flink/conf
-        - name: JOB_MANAGER_RPC_ADDRESS
-          value: {{ .Values.jobmanager.address }}
+          #        - name: JOB_MANAGER_RPC_ADDRESS
+          #          value: {{ .Values.jobmanager.address }}
         resources:
           limits:
             cpu: {{ .Values.resources.jobmanager.limits.cpu }}
@@ -54,7 +61,9 @@ spec:
             memory: {{ .Values.resources.jobmanager.requests.memory }}
         volumeMounts:
         - name: flink-config-volume
-          mountPath: /opt/flink/conf/
+          mountPath: /opt/flink/conf
+          #        securityContext:
+          #          runAsUser: 9999
       volumes:
       - name: flink-config-volume
         configMap:
