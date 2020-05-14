@@ -18,8 +18,8 @@
 #
 
 ## Namespace to deploy pulsar
-namespace: default
-namespaceCreate: no
+namespace: pulsar
+namespaceCreate: yes
 
 ## If persistence is enabled, components that have state will
 ## be deployed with PersistentVolumeClaims, otherwise, for test
@@ -132,7 +132,7 @@ zookeeperMetadata:
 ##
 bookkeeper:
   component: bookkeeper
-  replicaCount: 3
+  replicaCount: 5
   updateStrategy:
     type: OnDelete
   podManagementPolicy: OrderedReady
@@ -145,7 +145,7 @@ bookkeeper:
   resources:
     requests:
       memory: 128Mi
-      cpu: 0.2
+      cpu: 0.1
   volumes:
     journal:
       name: journal
@@ -207,7 +207,7 @@ bookkeeper:
 ##
 broker:
   component: broker
-  replicaCount: 2
+  replicaCount: 5
   # nodeSelector:
     # cloud.google.com/gke-nodepool: default-pool
   annotations:

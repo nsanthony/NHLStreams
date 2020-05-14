@@ -36,18 +36,18 @@ public class BarDown {
         env.getConfig().setGlobalJobParameters(params);
 
         String pulsarURL = "pulsar://192.168.1.39:30329";
-        String pulsarSourceTopic = "persistent://nifi/NHLStreams/game-logs";
+        String pulsarSourceTopic = "persistent://NHLStreams/games/game-logs";
         String pulsarSinkTopic = "persistent://NHLStreams/games/game-results";
         String pulsarSubName = "BarDown";
         Authentication pulsarAuth = new AuthenticationDisabled();
 
 
-//        PulsarSourceBuilder<String> pulsarSourceBuilder = PulsarSourceBuilder
-//                .builder(new SimpleStringSchema())
-//                .authentication(pulsarAuth)
-//                .serviceUrl(pulsarURL)
-//                .topic(pulsarSourceTopic)
-//                .subscriptionName(pulsarSubName);
+        PulsarSourceBuilder<String> pulsarSourceBuilder = PulsarSourceBuilder
+                .builder(new SimpleStringSchema())
+                .authentication(pulsarAuth)
+                .serviceUrl(pulsarURL)
+                .topic(pulsarSourceTopic)
+                .subscriptionName(pulsarSubName);
 
 
         FlinkPulsarProducer<String> pulsarSinkBuilder = new FlinkPulsarProducer<>(
@@ -59,22 +59,22 @@ public class BarDown {
 
 
 
-        DataStream<String> pulsarStream = env.fromElements(WordData.WORDS);;
+//        DataStream<String> pulsarStream = env.fromElements(WordData.WORDS);
 
         System.out.println("Executing WordCount example with default input data set.");
         System.out.println("Use --input to specify file input.");
         // get default test text data
 
 
-//        SourceFunction<String> pulsarSource = null;
-//        try {
-//             pulsarSource = pulsarSourceBuilder.build();
-//        }catch (PulsarClientException e){
-//            LOG.log(Level.SEVERE, "Could not build the Pulsar Source!!!!", e);
-//            e.printStackTrace();
-//        }
-
-//        DataStream<String> pulsarStream = env.addSource(pulsarSource);
+        SourceFunction<String> pulsarSource = null;
+        try {
+             pulsarSource = pulsarSourceBuilder.build();
+        }catch (PulsarClientException e){
+            LOG.log(Level.SEVERE, "Could not build the Pulsar Source!!!!", e);
+            e.printStackTrace();
+        }
+//
+        DataStream<String> pulsarStream = env.addSource(pulsarSource);
 
 
         DataStream<String> passThroughStream = pulsarStream.shuffle();
