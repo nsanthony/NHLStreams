@@ -18,13 +18,15 @@ data:
     {{- if (eq .Values.zookeeper.useZookeeper true) }}
       high-availability: zookeeper
       high-availability.zookeeper.quorum: {{ .Values.zookeeper.clusterIP }}:{{ .Values.zookeeper.clientPort }}
+      high-availability.jobmanager.port: {{ .Values.flink.jobmanager.syncPort }}
       high-availability.zookeeper.heap.mb: {{ .Values.zookeeper.heapMB }}
       high-availability.storageDir: /data
       high-availability.zookeeper.path.root: /flink
-      high-availability.zookeeper.client.connection-timeout: {{ .Values.zookeeper.clientTimeout }}
-      high-availability.zookeeper.client.session-timeout: {{ .Values.zookeeper.sessionTimeout }}
-      high-availability.zookeeper.client.max-retry-attempts: {{ .Values.zookeeper.clientRetryAttempts }}
-      zookeeper.sasl.disable: true
+      high-availability.cluster-id: /flink
+      #      high-availability.zookeeper.client.connection-timeout: {{ .Values.zookeeper.clientTimeout }}
+      #      high-availability.zookeeper.client.session-timeout: {{ .Values.zookeeper.sessionTimeout }}
+      #      high-availability.zookeeper.client.max-retry-attempts: {{ .Values.zookeeper.clientRetryAttempts }}
+      #      zookeeper.sasl.disable: true
       zookeeper.heap.mb: {{ .Values.zookeeper.heapMB }} 
     {{ else }}
       jobmanager.rpc.address: {{ .Values.jobmanager.address }}
@@ -45,7 +47,7 @@ data:
     tickTime=2000
     initLimit=10
     syncLimit=5
-    clientPort=2181
+    clientPort={{ .Values.zookeeper.clientPort }}
     server.0=localhost:2888:3888
     dataDir=/tmp/zookeeper
 

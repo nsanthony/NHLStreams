@@ -14,6 +14,17 @@ spec:
         app: {{ .Values.flink.clusterName }}
         component: {{ .Values.flink.clusterName }}-taskmanager
     spec:
+      initContainers:
+      - name: wait-zookeeper-ready
+        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        command: ["sh", "-c", "until nslookup flink-zookeeper.default.svc.cluster.local; do echo waiting for myservice; sleep 3; done"]
+        #        args:
+        #          - >-
+        #            until {{ .Values.flink.clusterName }}-zookeeper.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do 
+        #              echo waiting for zookeeper; 
+        #              sleep 3; 
+        #            done;
       containers:
       - name: taskmanager
         image: {{ .Values.image }}:{{ .Values.imageTag }}
@@ -29,17 +40,18 @@ spec:
         args:
         - taskmanager
         ports:
-        - name: data
-          containerPort: 6121
         - name: rpc
           containerPort: 6122
-        - name: query
-          containerPort: 6125
-        env:
-        - name: FLINK_CONF_DIR
-          value: /opt/flink/conf
-        - name: JOB_MANAGER_RPC_ADDRESS
-          value: {{ .Values.jobmanager.kubeAddress }}
+          #        livenessProbe:
+          #          tcpSocket:
+          #            port: 6122
+          #          initialDelaySeconds: 30
+          #          periodSeconds: 60
+          #        env:
+          #        - name: FLINK_CONF_DIR
+          #          value: /opt/flink/conf
+          #        - name: JOB_MANAGER_RPC_ADDRESS
+          #          value: {{ .Values.jobmanager.kubeAddress }}
         resources:
           limits:
             cpu: {{ .Values.flink.taskmanager.slots }}
@@ -49,11 +61,13 @@ spec:
             memory: {{ .Values.resources.taskmanager.requests.memory }}
         volumeMounts:
         - name: flink-config-volume
-          mountPath: /opt/flink/conf/
+          mountPath: /opt/flink/conf
+          #        securityContext:
+          #          runAsUser: 9999
       volumes:
       - name: flink-config-volume
         configMap:
-          name: flink-taskmanager-config
+          name: flink-config
           items:
           - key: flink-conf.yaml
             path: flink-conf.yaml

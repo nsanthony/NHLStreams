@@ -4,11 +4,11 @@ import com.google.gson.Gson;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.streaming.connectors.nifi.NiFiDataPacket;
 
-public class ParseNHLJson implements MapFunction<NiFiDataPacket, Gson> {
+public class ParseNHLJson implements MapFunction<String, Gson> {
     @Override
-    public Gson map(NiFiDataPacket value) throws Exception {
+    public Gson map(String value) throws Exception {
         Gson nhlJson = new Gson();
-        nhlJson.toJson(value.getContent().toString());
+        nhlJson.toJson(value);
         return nhlJson;
     }
 }
