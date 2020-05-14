@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.flink.clusterName }}-jobmanager
+spec:
+  type: ClusterIP
+  clusterIP: 10.43.114.217
+  ports:
+  - name: rpc
+    port: 6123
+  - name: blob
+    port: 6124
+  - name: ui
+    port: 8081
+  - port: {{ .Values.flink.jobmanager.syncPort }}
+    targetPort: ha
+    protocol: TCP
+    name: ha
+  selector:
+    app: {{ .Values.flink.clusterName }}
+    component: {{ .Values.flink.clusterName }}-jobmanager
+    #  type: LoadBalancer

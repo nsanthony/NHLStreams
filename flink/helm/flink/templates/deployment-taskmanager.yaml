@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.flink.clusterName }}-taskmanager
+spec:
+  replicas: {{ .Values.flink.taskmanager.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.flink.clusterName }}
+      component: {{ .Values.flink.clusterName }}-taskmanager
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.flink.clusterName }}
+        component: {{ .Values.flink.clusterName }}-taskmanager
+    spec:
+      initContainers:
+      - name: wait-zookeeper-ready
+        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        command: ["sh", "-c", "until nslookup flink-zookeeper.default.svc.cluster.local; do echo waiting for myservice; sleep 3; done"]
+        #        args:
+        #          - >-
+        #            until {{ .Values.flink.clusterName }}-zookeeper.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do 
+        #              echo waiting for zookeeper; 
+        #              sleep 3; 
+        #            done;
+      containers:
+      - name: taskmanager
+        image: {{ .Values.image }}:{{ .Values.imageTag }}
+        imagePullPolicy: {{ .Values.imagePullPolicy }}
+        workingDir: /opt/flink
+        command: ["/bin/bash", "-c", "$FLINK_HOME/bin/taskmanager.sh start; \
+          while :;
+          do
+            if [[ -f $(find log -name '*taskmanager*.log') ]];
+              then tail -f -n +1 log/*taskmanager*.log;
+            fi;
+          done"]
+        args:
+        - taskmanager
+        ports:
+        - name: rpc
+          containerPort: 6122
+          #        livenessProbe:
+          #          tcpSocket:
+          #            port: 6122
+          #          initialDelaySeconds: 30
+          #          periodSeconds: 60
+          #        env:
+          #        - name: FLINK_CONF_DIR
+          #          value: /opt/flink/conf
+          #        - name: JOB_MANAGER_RPC_ADDRESS
+          #          value: {{ .Values.jobmanager.kubeAddress }}
+        resources:
+          limits:
+            cpu: {{ .Values.flink.taskmanager.slots }}
+            memory: {{ .Values.resources.taskmanager.limits.memory }}
+          requests:
+            cpu: {{ .Values.flink.taskmanager.slots }}
+            memory: {{ .Values.resources.taskmanager.requests.memory }}
+        volumeMounts:
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf
+          #        securityContext:
+          #          runAsUser: 9999
+      volumes:
+      - name: flink-config-volume
+        configMap:
+          name: flink-config
+          items:
+          - key: flink-conf.yaml
+            path: flink-conf.yaml
+          - key: log4j.properties
+            path: log4j.properties

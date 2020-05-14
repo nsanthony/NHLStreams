@@ -1,0 +1,56 @@
+image: nsanthony/flink-test-job
+imageTag: 1.2
+imagePullPolicy: IfNotPresent
+
+resources:
+  jobmanager:
+    limits:
+      cpu: 1000m
+      memory: 1280Mi
+    requests:
+      cpu: 1000m
+      memory: 1280Mi
+  taskmanager:
+    limits:
+      memory: 2000Mi
+    requests:
+      memory: 1568Mi
+  zookeeper:
+    requests:
+      cpu: 1000m
+      memory: 1500Mi
+
+zookeeper:
+  useZookeeper: true
+  heapMB: 1000
+  clientPort: 2181
+  serverPort: 2888
+  leaderElectionPort: 3888
+  replicas: 1
+  clientTimeout: 80000
+  sessionTimeout: 900000
+  clientRetryAttempts: 10
+  clusterIP: flink-zookeeper.default.svc.cluster.local
+jobmanager:
+ address: 10.43.114.217
+ kubeAddress: 10.43.114.217
+ port: 6123
+flink:
+  clusterName: flink
+  jobmanager: 
+    heapMB: 1024
+    replicas: 1
+    syncPort: 6150
+  taskmanager:
+    heapMB: 1024
+    replicas: 3
+    slots: 2
+  ## Other config options for flink-conf.yaml
+  #config: |
+  #  some.option: 3
+
+hadoop:
+  core-site.xml: |
+    <?xml version="1.0"?>
+    <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+    <configuration/>

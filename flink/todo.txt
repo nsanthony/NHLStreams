@@ -1,0 +1,1 @@
+Change the taskmanagers to come up after the jobmanager has connected and picked a leader. Or create more zookeeper replicas
