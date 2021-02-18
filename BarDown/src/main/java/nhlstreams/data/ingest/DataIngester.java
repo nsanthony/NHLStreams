@@ -7,10 +7,10 @@ public class DataIngester {
 
 	
 	
-	public void parseData(String input) {
+	public static String parseData(String input) {
 		//this needs to do something. What input?
 		
-		
+		return input;
 		
 	}
 	

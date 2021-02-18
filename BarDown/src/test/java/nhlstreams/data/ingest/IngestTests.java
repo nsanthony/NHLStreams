@@ -17,4 +17,12 @@ public class IngestTests {
 		int returnedValue = DataIngester.testingThis();
 		assertEquals(2, returnedValue);
 	}
+	
+	@Test
+	public void returnString() {
+		String testString = "test";
+		String returnedString = DataIngester.parseData(testString);
+		
+		assertEquals(testString, returnedString);
+	}
 }
