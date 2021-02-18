@@ -13,4 +13,11 @@ public class DataIngester {
 		
 		
 	}
+	
+	
+	//move this to another method and change the test. 
+	public static int testingThis() {		
+		return 2;
+	}
+	
 }

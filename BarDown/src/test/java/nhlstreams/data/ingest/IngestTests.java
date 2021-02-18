@@ -1,4 +1,4 @@
-package nhlstreams;
+package nhlstreams.data.ingest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,12 +7,14 @@ import org.junit.jupiter.api.Test;
 
 import com.google.common.flogger.FluentLogger;
 
-public class BarDownTests {
+import nhlstreams.BarDown;
+
+public class IngestTests {
 	private static final FluentLogger logger = FluentLogger.forEnclosingClass();   	
 	
 	@Test
 	public void testIntReturn() {
-		int returnedValue = BarDown.testingThis();
+		int returnedValue = DataIngester.testingThis();
 		assertEquals(2, returnedValue);
 	}
 }
