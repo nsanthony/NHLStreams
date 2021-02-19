@@ -35,7 +35,7 @@ public class DataController {
 	}
 	
 	
-	public HttpRequest createRequest(String url) throws URISyntaxException {
+	private HttpRequest createRequest(String url) throws URISyntaxException {
 		HttpRequest request = HttpRequest.newBuilder()
 				.uri(new URI(url))
 				.GET()
