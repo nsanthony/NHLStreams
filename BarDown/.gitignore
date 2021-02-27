@@ -1,8 +1,10 @@
 # Ignore Gradle project-specific cache directory
 .gradle
-.idea
+
 # Ignore Gradle build output directory
 build
-/.idea/
-/.gradle/
-**DS_Store**
+.project
+.classpath
+.gitattributes
+.settings/
+bin/** 
