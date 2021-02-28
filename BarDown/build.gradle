@@ -40,7 +40,7 @@ repositories {
 
 dependencies {
 	implementation group: 'org.fluentd', name: 'fluent-logger', version: '0.3.3'
-	implementation group: 'com.google.flogger', name: 'flogger-system-backend', version: '0.5.1'
+	implementation 'com.google.flogger:flogger-system-backend:0.5.1'
 	implementation "com.google.code.gson:gson:2.7"
 	
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
@@ -52,6 +52,7 @@ run.classpath = sourceSets.main.runtimeClasspath
 
 test {
     useJUnitPlatform()
+	systemProperties = ['java.util.logging.config.file' : 'logging.properties']    
 }
 
 jar {
