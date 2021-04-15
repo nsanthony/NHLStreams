@@ -1,9 +1,6 @@
 package nhlstreams.data.ingest;
 
-import com.google.common.flogger.FluentLogger;
-
 public class DataIngester {
-	private static final FluentLogger logger = FluentLogger.forEnclosingClass();   	
 
 	
 	

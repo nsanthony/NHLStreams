@@ -10,13 +10,14 @@ import java.net.http.HttpResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.flogger.FluentLogger;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import lombok.extern.flogger.Flogger;
+
+@Flogger
 public class DataControllerTests {
-	private static final FluentLogger logger = FluentLogger.forEnclosingClass();  
 	private static String baseUrl;
 	private static String eventExtension;	
 	private static String path;
@@ -40,10 +41,10 @@ public class DataControllerTests {
 			
 			Gson gson = new Gson();
 			gson.toJson(jsonObject, new FileWriter(path));
-			
-			logger.atInfo().log("\nGot this response: " + event.body());
+			System.out.print("Test");
+			log.atInfo().log("\nGot this response: " + event.body());
 		} catch (URISyntaxException | IOException | InterruptedException e) {
-			logger.atSevere().withCause(e)
+			log.atSevere().withCause(e)
 				.log("Failed to get event");
 		}
 		

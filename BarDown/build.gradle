@@ -8,7 +8,7 @@ buildscript {
 plugins {
     id 'java'
     id 'application'
-    // shadow plugin to produce fat JARs
+    id "io.freefair.lombok" version "6.0.0-m2"
 }
 
 
@@ -26,6 +26,8 @@ targetCompatibility = javaVersion
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+
+
 
 
 
