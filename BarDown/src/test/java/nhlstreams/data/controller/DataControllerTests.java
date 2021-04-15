@@ -41,8 +41,7 @@ public class DataControllerTests {
 			
 			Gson gson = new Gson();
 			gson.toJson(jsonObject, new FileWriter(path));
-			System.out.print("Test");
-			log.atInfo().log("\nGot this response: " + event.body());
+			log.atSevere().log("\nGot this response: " + event.body());
 		} catch (URISyntaxException | IOException | InterruptedException e) {
 			log.atSevere().withCause(e)
 				.log("Failed to get event");
