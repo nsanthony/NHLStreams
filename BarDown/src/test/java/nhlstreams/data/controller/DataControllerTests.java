@@ -10,6 +10,7 @@ import java.net.http.HttpResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import com.google.common.flogger.StackSize;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -25,7 +26,8 @@ public class DataControllerTests {
 	@BeforeAll
 	public static void setup() {
 		baseUrl = "http://statsapi.web.nhl.com/api/v1";
-		eventExtension = "/game/2017020608/feed/live";
+//		eventExtension = "/game/2017020608/feed/live";
+		eventExtension = "teams/13";
 		path = "event.json";
 		
 	}
@@ -43,11 +45,11 @@ public class DataControllerTests {
 			gson.toJson(jsonObject, new FileWriter(path));
 			log.atSevere().log("\nGot this response: " + event.body());
 		} catch (URISyntaxException | IOException | InterruptedException e) {
-			log.atSevere().withCause(e)
-				.log("Failed to get event");
+			log.atSevere().withCause(e).withStackTrace(StackSize.FULL)
+				.log("Failed to get event %s", event.body());
 		}
 		
-		assertTrue(true);
+		assertTrue(false);
 		
 		
 	}
