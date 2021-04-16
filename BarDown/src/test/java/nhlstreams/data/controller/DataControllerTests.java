@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import lombok.extern.flogger.Flogger;
+import nhlstreams.data.ingest.DataParser;
 
 @Flogger
 public class DataControllerTests {
@@ -46,11 +47,9 @@ public class DataControllerTests {
 			
 			Gson gson = new Gson();
 			gson.toJson(jsonObject, new FileWriter(path));
-			JsonElement gameData = jsonObject.get("gameData"); //This will get us the JsonElement that has the teams, player, venue, game etc.
 			log.atInfo().log("Key Element Pairs: ");
-			for(Entry<String, JsonElement> entry: gameData.getAsJsonObject().entrySet()) {
-				log.atInfo().log("%s : %s", entry.getKey(), entry.getValue().toString());
-			}
+			DataParser.getGameMetaData(jsonObject);
+
 //			log.atSevere().log("\nGot this response: " + jarray.toString());
 		} catch (URISyntaxException | IOException | InterruptedException e) {
 			log.atSevere().withCause(e).withStackTrace(StackSize.FULL)

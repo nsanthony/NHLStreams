@@ -14,14 +14,14 @@ public class IngestTests {
 	
 	@Test
 	public void testIntReturn() {
-		int returnedValue = DataIngester.testingThis();
+		int returnedValue = DataParser.testingThis();
 		assertEquals(2, returnedValue);
 	}
 	
 	@Test
 	public void returnString() {
 		String testString = "test";
-		String returnedString = DataIngester.parseData(testString);
+		String returnedString = DataParser.parseData(testString);
 		
 		assertEquals(testString, returnedString);
 	}
