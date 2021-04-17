@@ -25,4 +25,15 @@ public class IngestTests {
 		
 		assertEquals(testString, returnedString);
 	}
+	
+	@Test
+	public void testHeightConverter() {
+		String hString = "6' 1\"";
+		int hInCm = 185;
+		DataParser parser = new DataParser();
+		double convertedHeight = parser.getHeight(hString);
+		
+		assertEquals(hInCm, convertedHeight, 1);
+		
+	}
 }

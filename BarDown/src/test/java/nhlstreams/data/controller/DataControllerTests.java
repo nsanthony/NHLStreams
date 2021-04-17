@@ -41,6 +41,7 @@ public class DataControllerTests {
 		
 		DataController dataCtl = new DataController(baseUrl);
 		HttpResponse<String> event = null;
+		DataParser parser = new DataParser();
 		try {
 			event = dataCtl.getLatestEvent(eventExtension);
 			JsonObject jsonObject = new JsonParser().parse(event.body()).getAsJsonObject();
@@ -48,7 +49,7 @@ public class DataControllerTests {
 			Gson gson = new Gson();
 			gson.toJson(jsonObject, new FileWriter(path));
 			log.atInfo().log("Key Element Pairs: ");
-			DataParser.getGameMetaData(jsonObject);
+			parser.getGameMetaData(jsonObject);
 
 //			log.atSevere().log("\nGot this response: " + jarray.toString());
 		} catch (URISyntaxException | IOException | InterruptedException e) {
