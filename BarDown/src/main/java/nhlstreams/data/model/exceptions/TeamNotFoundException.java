@@ -1,12 +1,15 @@
-package nhlstreams.data.model.orgs;
+package nhlstreams.data.model.exceptions;
 
 import lombok.extern.flogger.Flogger;
 
 @Flogger
 public class TeamNotFoundException extends Exception {
 	private static final long serialVersionUID = 8072388492653431285L;
-	TeamNotFoundException(String error){
+	public TeamNotFoundException(String error){
 		log.atSevere().log("Failed to find team %s", error);
+	}
+	
+	public TeamNotFoundException() {
 	}
 
 }

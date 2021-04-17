@@ -17,12 +17,12 @@ import nhlstreams.data.model.Game;
 import nhlstreams.data.model.Player;
 import nhlstreams.data.model.Position;
 import nhlstreams.data.model.Status;
-import nhlstreams.data.model.orgs.ConferenceNotFoundException;
-import nhlstreams.data.model.orgs.DivsionNotFoundException;
+import nhlstreams.data.model.exceptions.ConferenceNotFoundException;
+import nhlstreams.data.model.exceptions.DivsionNotFoundException;
+import nhlstreams.data.model.exceptions.TeamNotFoundException;
+import nhlstreams.data.model.exceptions.VenueNotFoundException;
 import nhlstreams.data.model.orgs.Team;
-import nhlstreams.data.model.orgs.TeamNotFoundException;
 import nhlstreams.data.model.orgs.Venue;
-import nhlstreams.data.model.orgs.VenueNotFoundException;
 import nhlstreams.data.processing.DataUtils;
 
 @Flogger
@@ -71,8 +71,6 @@ public class GameMetaDataParser {
 			log.atSevere().withCause(e).withStackTrace(StackSize.FULL)
 				.log("Failed to iniliazie home/away teams \n%s \n%s", homeTeamObject, awayTeamObject);
 		}
-		
-		log.atInfo().log("Teams: \nHome: %s \nAway: %s", homeTeamObject, awayTeamObject);
 	}
 	
 	public void getPlayerData(JsonElement playerElement) throws NullPointerException {
@@ -82,12 +80,6 @@ public class GameMetaDataParser {
 		for (Entry<String, JsonElement> entry : playerElement.getAsJsonObject().entrySet()) {
 			Player player = new Player();
 			JsonObject playerObject = entry.getValue().getAsJsonObject();
-			// {"id":8471735,"fullName":"Keith
-			// Yandle","link":"/api/v1/people/8471735","firstName":"Keith","lastName":"Yandle","primaryNumber":"3","birthDate":"1986-09-09","currentAge":34,
-			// "birthCity":"Boston","birthStateProvince":"MA","birthCountry":"USA","nationality":"USA","height":"6'1\"",
-			// "weight":196,"active":true,"alternateCaptain":true,"captain":false,"rookie":false,"shootsCatches":"L","rosterStatus":"Y",
-			// "currentTeam":{"id":13,"name":"FloridaPanthers","link":"/api/v1/teams/13","triCode":"FLA"},
-			// "primaryPosition":{"code":"D","name":"Defenseman","type":"Defenseman","abbreviation":"D"}}
 
 			player.setId(DataUtils.getField("id", playerObject).getAsInt());
 			player.setFullName(DataUtils.getField("fullName", playerObject).getAsString());

@@ -1,4 +1,4 @@
-package nhlstreams.data.model.orgs;
+package nhlstreams.data.model.exceptions;
 
 import lombok.extern.flogger.Flogger;
 

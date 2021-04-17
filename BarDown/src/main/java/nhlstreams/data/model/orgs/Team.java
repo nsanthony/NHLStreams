@@ -4,10 +4,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import lombok.Data;
-import lombok.extern.flogger.Flogger;
+import nhlstreams.data.model.exceptions.ConferenceNotFoundException;
+import nhlstreams.data.model.exceptions.DivsionNotFoundException;
+import nhlstreams.data.model.exceptions.TeamNotFoundException;
+import nhlstreams.data.model.exceptions.VenueNotFoundException;
 import nhlstreams.data.processing.DataUtils;
 
-@Flogger
 @Data
 public class Team {
 	private String name;
@@ -41,7 +43,7 @@ public class Team {
 		this.firstYearOfPlay = DataUtils.getField("firstYearOfPlay", teamObject).getAsString();
 		this.shortName = DataUtils.getField("shortName", teamObject).getAsString();
 		this.officalSiteUrl = DataUtils.getField("officialSiteUrl", teamObject).getAsString();
-		
+
 //		findFranchse(DataUtils.getField("franchise", teamObject).getAsJsonObject());
 		findVenue(DataUtils.getField("venue", teamObject).getAsJsonObject());
 		findTeamTriCode(DataUtils.getField("triCode", teamObject).getAsString());

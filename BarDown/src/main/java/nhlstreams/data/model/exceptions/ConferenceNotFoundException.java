@@ -1,4 +1,4 @@
-package nhlstreams.data.model.orgs;
+package nhlstreams.data.model.exceptions;
 
 import lombok.extern.flogger.Flogger;
 
@@ -6,7 +6,7 @@ import lombok.extern.flogger.Flogger;
 public class ConferenceNotFoundException extends Exception {
 	private static final long serialVersionUID = 591619277041652316L;
 	
-	ConferenceNotFoundException(String conferenceName){
+	public ConferenceNotFoundException(String conferenceName){
 		log.atSevere().log("Failed to find conference %s",conferenceName);
 	}
 
