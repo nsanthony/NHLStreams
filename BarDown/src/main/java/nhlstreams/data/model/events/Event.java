@@ -1,6 +1,7 @@
 package nhlstreams.data.model.events;
 
 import java.time.ZonedDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.flogger.StackSize;
@@ -45,8 +46,12 @@ public class Event {
 		this.type = getEventType(eventObject);
 		this.eventString = eventObject;
 
-		if (type.involvesPlayers) {
+		if(type.involvesPlayers && type != EventType.STOP) {
 			getPlayers(eventObject);
+			getEventDetails(eventObject);
+			getEventCoords(eventObject);
+			getEventTeam(eventObject);
+		}else if(type.involvesPlayers && type == EventType.STOP) {
 			getEventDetails(eventObject);
 		}
 	}
@@ -66,6 +71,7 @@ public class Event {
 	}
 
 	private void getPlayers(JsonObject eventObject) {
+		eventPlayers = new HashMap<>();
 		try {
 			JsonArray playerArray = eventObject.get("players").getAsJsonArray();
 			for (JsonElement playerElement : playerArray) {
@@ -106,8 +112,6 @@ public class Event {
 			getPeriodType(about.get("periodType").getAsString());
 			getPeriodTimes(about);
 			getScoreState(about.get("goals").getAsJsonObject());
-			getEventCoords(eventObject.get("coordinates").getAsJsonObject());
-			getEventTeam(eventObject.get("team").getAsJsonObject());
 		} catch (NullPointerException e) {
 			log.atSevere().withCause(e).log("Failed to get value for event %s : %s", this.type.id, about);
 		}
@@ -145,18 +149,21 @@ public class Event {
 		game.setScoreState(scoreState);
 	}
 
-	private void getEventCoords(JsonObject coordsObject) {
+	private void getEventCoords(JsonObject eventObject) {
+		JsonObject coordsObject = eventObject.get("coordinates").getAsJsonObject();
 		coords = new Coordinates();
 		coords.setX(coordsObject.get("x").getAsDouble());
 		coords.setY(coordsObject.get("y").getAsDouble());
 	}
 
-	private void getEventTeam(JsonObject eventTeamObject) {
-		int eventTeamId = eventTeamObject.get("id").getAsInt();
+	private void getEventTeam(JsonObject eventObject) {
+		int eventTeamId = eventObject
+				.get("team").getAsJsonObject()
+				.get("id").getAsInt();
 		try {
 			this.team = game.getTeamById(eventTeamId);
 		} catch (TeamNotFoundException e) {
-			log.atSevere().withCause(e).log("Failed to find %s in game...", eventTeamObject.get("name").getAsString());
+			log.atSevere().withCause(e).log("Failed to find %s in game...", eventObject.get("team").getAsString());
 		}
 	}
 

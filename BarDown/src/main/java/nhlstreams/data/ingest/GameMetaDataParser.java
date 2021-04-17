@@ -111,6 +111,7 @@ public class GameMetaDataParser {
 			}
 		}
 		game.setHomePlayers(homePlayers);
+		game.setAwayPlayers(awayPlayers);
 	}
 	
 	public Team findTeam(JsonObject cTeamObject) {

@@ -1,26 +1,22 @@
 package nhlstreams.data.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
-import java.util.Map.Entry;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import com.google.common.flogger.StackSize;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import lombok.extern.flogger.Flogger;
 import nhlstreams.data.ingest.DataParser;
-import nhlstreams.data.model.Game;
 import nhlstreams.data.model.Status;
 
 @Flogger
@@ -51,19 +47,13 @@ public class DataControllerTests {
 			gson.toJson(jsonObject, new FileWriter(path));
 			log.atInfo().log("Key Element Pairs: ");
 			parser.getGameMetaData(jsonObject);
-//			for(Entry<String, JsonElement> entry: jsonObject.entrySet()) {
-//				log.atInfo().log("keys %s", entry.getKey());
-//			}
 			parser.getEvents(jsonObject);
 
 		} catch (URISyntaxException | IOException | InterruptedException e) {
 			log.atSevere().withCause(e).withStackTrace(StackSize.FULL)
 				.log("Failed to get event %s", event.body());
 		}
-		assertEquals(Status.FINAL.abstractGameState, parser.getGame().getGameStatus().abstractGameState);
-		assertTrue(false);
-		
-		
+		assertEquals(Status.FINAL.abstractGameState, parser.getGame().getGameStatus().abstractGameState);		
 	}
 	
 
