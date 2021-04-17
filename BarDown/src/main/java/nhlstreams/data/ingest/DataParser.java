@@ -1,6 +1,7 @@
 package nhlstreams.data.ingest;
 
 import java.sql.Date;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,12 +17,13 @@ import nhlstreams.data.model.Player;
 import nhlstreams.data.model.Position;
 import nhlstreams.data.model.Status;
 import nhlstreams.data.model.Team;
+import nhlstreams.data.model.Venue;
 import nhlstreams.data.processing.DataUtils;
 
 @Flogger
 public class DataParser {
-	
-	private JsonObject playerObject;
+
+	private Game game = new Game();
 	
 	public static String parseData(String input) {
 		// this needs to do something. What input?
@@ -36,65 +38,61 @@ public class DataParser {
 	}
 
 	// The objects are game, datetime, status, teams, players, venue.
-	public void getGameMetaData(JsonObject gameObject) {
-		JsonElement gameData = gameObject.get("gameData");
-		JsonObject expirementalObject = gameData.getAsJsonObject().get("datetime").getAsJsonObject();
-		getDatetime(expirementalObject);
+	public Game getGameMetaData(JsonObject gameObject) {
+		JsonObject gameData = gameObject.get("gameData").getAsJsonObject();
 		
-		Map<String, Player> playerMap = getPlayerData(gameData.getAsJsonObject().get("players").getAsJsonObject());
-		Game game = getGameMetadata(gameData.getAsJsonObject().get("game").getAsJsonObject());
-		getGameStatus(gameData.getAsJsonObject().get("status").getAsJsonObject(), game);
+		getPlayerData(gameData.get("players"));
+		getGameMetadata(gameData.get("game"));
+		getGameStatus(gameData.get("status"));
+		getDatetime(gameData.get("datetime"));
 		
-		log.atInfo().log("Game data looks like this: \n%s \n%s", expirementalObject.toString(), expirementalObject.toString());
-
+		return game;
 	}
 
-	public Map<String, Player> getPlayerData(JsonObject playersObject) throws NullPointerException{
+	public void getPlayerData(JsonElement playerElement) throws NullPointerException {
 		Map<String, Player> players = new HashMap<>();
-		
-		for (Entry<String, JsonElement> entry : playersObject.entrySet()) {
-			JsonObject playerObject = entry.getValue().getAsJsonObject();
-		
+		for (Entry<String, JsonElement> entry : playerElement.getAsJsonObject().entrySet()) {
 			Player player = new Player();
-			this.playerObject = playerObject;
+			JsonObject playerObject = entry.getValue().getAsJsonObject();
 			// {"id":8471735,"fullName":"Keith
 			// Yandle","link":"/api/v1/people/8471735","firstName":"Keith","lastName":"Yandle","primaryNumber":"3","birthDate":"1986-09-09","currentAge":34,
-			//"birthCity":"Boston","birthStateProvince":"MA","birthCountry":"USA","nationality":"USA","height":"6'1\"",
+			// "birthCity":"Boston","birthStateProvince":"MA","birthCountry":"USA","nationality":"USA","height":"6'1\"",
 			// "weight":196,"active":true,"alternateCaptain":true,"captain":false,"rookie":false,"shootsCatches":"L","rosterStatus":"Y",
 			// "currentTeam":{"id":13,"name":"FloridaPanthers","link":"/api/v1/teams/13","triCode":"FLA"},
-			//"primaryPosition":{"code":"D","name":"Defenseman","type":"Defenseman","abbreviation":"D"}}
-			
-			player.setId(getField("id").getAsInt());
-			player.setFullName(getField("fullName").getAsString());
-			player.setLink(getField("link").getAsString());
-			player.setPrimaryPosition(getPosition());
-			player.setFirstName(getField("firstName").getAsString());
-			player.setLastName(getField("lastName").getAsString());
-			player.setPrimaryNumber(getField("primaryNumber").getAsInt());
-			player.setBirthDate(Date.valueOf(getField("birthDate").getAsString()));
-			player.setCurrentAge(getField("currentAge").getAsInt());
-			player.setBirthCity(getField("birthCity").getAsString());
-			player.setBirthStateProvince(getField("birthStateProvince").getAsString());
-			player.setBirthCountry(getField("birthCountry").getAsString());
-			player.setNationality(getField("nationality").getAsString());
-			player.setHieght(getHeight(getField("height").getAsString()));
-			player.setWeight(getField("weight").getAsInt());
-			player.setActive(getField("active").getAsBoolean());
-			player.setAltCaptain(getField("alternateCaptain").getAsBoolean());
-			player.setCaptain(getField("captain").getAsBoolean());
-			player.setRookie(getField("rookie").getAsBoolean());
-			player.setRosterStatus(getRosterStatus());
-			player.setCurrentTeam(new Team(getField("currentTeam")));
-			player.setHand(getField("shootsCatches").getAsString());
-			
+			// "primaryPosition":{"code":"D","name":"Defenseman","type":"Defenseman","abbreviation":"D"}}
+
+			player.setId(DataUtils.getField("id", playerObject).getAsInt());
+			player.setFullName(DataUtils.getField("fullName", playerObject).getAsString());
+			player.setLink(DataUtils.getField("link", playerObject).getAsString());
+			player.setPrimaryPosition(getPosition(playerObject));
+			player.setFirstName(DataUtils.getField("firstName", playerObject).getAsString());
+			player.setLastName(DataUtils.getField("lastName", playerObject).getAsString());
+			player.setPrimaryNumber(DataUtils.getField("primaryNumber", playerObject).getAsInt());
+			player.setBirthDate(Date.valueOf(DataUtils.getField("birthDate", playerObject).getAsString()));
+			player.setCurrentAge(DataUtils.getField("currentAge", playerObject).getAsInt());
+			player.setBirthCity(DataUtils.getField("birthCity", playerObject).getAsString());
+			player.setBirthStateProvince(DataUtils.getField("birthStateProvince", playerObject).getAsString());
+			player.setBirthCountry(DataUtils.getField("birthCountry", playerObject).getAsString());
+			player.setNationality(DataUtils.getField("nationality", playerObject).getAsString());
+			player.setHieght(getHeight(DataUtils.getField("height", playerObject).getAsString()));
+			player.setWeight(DataUtils.getField("weight", playerObject).getAsInt());
+			player.setActive(DataUtils.getField("active", playerObject).getAsBoolean());
+			player.setAltCaptain(DataUtils.getField("alternateCaptain", playerObject).getAsBoolean());
+			player.setCaptain(DataUtils.getField("captain", playerObject).getAsBoolean());
+			player.setRookie(DataUtils.getField("rookie", playerObject).getAsBoolean());
+			player.setRosterStatus(getRosterStatus(playerObject));
+			player.setCurrentTeam(new Team(DataUtils.getField("currentTeam", playerObject)));
+			player.setHand(DataUtils.getField("shootsCatches", playerObject).getAsString());
+
 			players.put(player.getFullName(), player);
 		}
-		return players;
+		game.setPlayers(players);
 	}
-	
-	public Position getPosition() {
-		String code = DataUtils.getField("code", getField("primaryPosition").getAsJsonObject()).getAsString();
-		switch(code) {
+
+	public Position getPosition(JsonObject playerObject) {
+		String code = DataUtils.getField("code", DataUtils.getField("primaryPosition", playerObject).getAsJsonObject()).getAsString();
+		
+		switch (code) {
 		case "C":
 			return Position.CENTER;
 		case "R":
@@ -110,70 +108,73 @@ public class DataParser {
 			return null;
 		}
 	}
-	
-	public Game getGameMetadata(JsonObject gameMetadata) {
-		Game game = new Game();
-		game.setPk(DataUtils.getField("pk", gameMetadata).getAsString());
-		game.setSeason(DataUtils.getField("season", gameMetadata).getAsString());
-		game.setType(DataUtils.getField("type", gameMetadata).getAsString());
+
+	public void getGameMetadata(JsonElement metaDataElement) {
+		JsonObject gameMetadataObject = metaDataElement.getAsJsonObject();
 		
-		return game;
+		game.setPk(DataUtils.getField("pk", gameMetadataObject).getAsString());
+		game.setSeason(DataUtils.getField("season", gameMetadataObject).getAsString());
+		game.setType(DataUtils.getField("type", gameMetadataObject).getAsString());
 	}
-	
-	public void getGameStatus(JsonObject statusObject, Game game) {
-		String detailedCode = DataUtils.getField("detailedState", statusObject).getAsString();
-		switch(detailedCode) {
+
+	public void getGameStatus(JsonElement statusElement) {
+		String detailedCode = DataUtils.getField("detailedState", statusElement.getAsJsonObject()).getAsString();
+		
+		switch (detailedCode) {
 		case "Final":
 			game.setGameStatus(Status.FINAL);
 		default:
 			game.setGameStatus(Status.FINAL);
 		}
 	}
-	
-	//"dateTime":"2018-01-03T01:00:00Z","endDateTime":"2018-01-03T03:43:41Z"
-	public void getDatetime(JsonObject datetimeObject) {
+
+	// "dateTime":"2018-01-03T01:00:00Z","endDateTime":"2018-01-03T03:43:41Z"
+	public void getDatetime(JsonElement datetimeElement) {
+		JsonObject datetimeObject = datetimeElement.getAsJsonObject();
+		
 		String startTimeString = DataUtils.getField("dateTime", datetimeObject).getAsString();
 		String endTimeString = DataUtils.getField("endDateTime", datetimeObject).getAsString();
-		Date startTime = Date.valueOf(startTimeString);
-		Date endTime = Date.valueOf(endTimeString);
 		
-		log.atInfo().log("Start/end %s -> %s", startTime.toString(), endTime.toString());
-	}
-	
-	public JsonElement getField(String field) {
+		ZonedDateTime startTime = ZonedDateTime.parse(startTimeString);
+		ZonedDateTime endTime = ZonedDateTime.parse(endTimeString);
 
-		if(playerObject.get(field) != null) {
-			return playerObject.get(field);
-		}else {
-			log.atFine().log("Failed to get field %s", field);
-			return DataUtils.error(field);
-		}
+		game.setStartTime(startTime.toEpochSecond());
+		game.setEndTime(endTime.toEpochSecond());
 	}
-	
-	
+
+	// {"id":5098,"name":"Xcel Energy Center","link":"/api/v1/venues/5098"}
+	public Venue getVenueData(JsonObject venueObject) {
+		Venue venue = new Venue();
+		venue.setId(DataUtils.getField("id", venueObject).getAsInt());
+		venue.setName(DataUtils.getField("name", venueObject).getAsString());
+		venue.setLink(DataUtils.getField("link", venueObject).getAsString());
+
+		return venue;
+	}
+
 	public int getHeight(String heightString) {
 		Pattern pattern = Pattern.compile("\\d+");
 		Matcher matcher = pattern.matcher(heightString);
 		int[] hieghtElements = new int[2];
 		int i = 0;
-		while(matcher.find()) {
+		while (matcher.find()) {
 			hieghtElements[i] = Integer.valueOf(matcher.group());
 			i++;
 		}
-		double converted = 2.54 * (12*hieghtElements[0] + hieghtElements[1]);
-		return  (int) converted;
+		double converted = 2.54 * (12 * hieghtElements[0] + hieghtElements[1]);
+		return (int) converted;
 	}
-	
-	public Boolean getRosterStatus() {
-		String status = getField("rosterStatus").getAsString();
-		switch(status) {
-			case "Y":
-				return true;
-			case "N":
-				return false;
-			default:
-				return true;
+
+	public Boolean getRosterStatus(JsonObject playerObject) {
+		String status = DataUtils.getField("rosterStatus", playerObject).getAsString();
+		switch (status) {
+		case "Y":
+			return true;
+		case "N":
+			return false;
+		default:
+			return true;
 		}
 	}
-	
+
 }

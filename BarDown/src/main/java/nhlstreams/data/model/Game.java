@@ -1,6 +1,7 @@
 package nhlstreams.data.model;
 
 import java.io.Serializable;
+import java.util.Map;
 
 import lombok.Data;
 
@@ -12,4 +13,7 @@ public class Game implements Serializable{
 	private String season;
 	private String type;
 	private Status gameStatus;
+	private long startTime;
+	private long endTime;
+	private Map<String, Player> players;
 }
