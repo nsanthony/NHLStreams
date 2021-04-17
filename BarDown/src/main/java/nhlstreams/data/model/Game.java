@@ -15,5 +15,5 @@ public class Game implements Serializable{
 	private Status gameStatus;
 	private long startTime;
 	private long endTime;
-	private Map<String, Player> players;
+	private Map<Integer, Player> players;
 }

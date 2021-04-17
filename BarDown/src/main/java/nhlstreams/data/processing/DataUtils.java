@@ -13,7 +13,7 @@ public class DataUtils {
 		if(object.get(field) != null) {
 			return object.get(field);
 		}else {
-			log.atWarning().log("Failed to get field %s", field);
+			log.atFine().log("Failed to get field %s", field);
 			return error(field);
 		}
 	}
