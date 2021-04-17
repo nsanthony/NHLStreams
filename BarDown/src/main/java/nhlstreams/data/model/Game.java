@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import lombok.Data;
+import nhlstreams.data.model.orgs.Team;
 
 @Data
 public class Game implements Serializable{
@@ -15,5 +16,8 @@ public class Game implements Serializable{
 	private Status gameStatus;
 	private long startTime;
 	private long endTime;
-	private Map<Integer, Player> players;
+	private Map<Integer, Player> homePlayers;
+	private Map<Integer, Player> awayPlayers;
+	private Team awayTeam;
+	private Team homeTeam;
 }

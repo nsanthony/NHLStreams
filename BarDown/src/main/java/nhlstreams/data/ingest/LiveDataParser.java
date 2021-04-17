@@ -34,7 +34,7 @@ public class LiveDataParser {
 		for(JsonElement play: plays) {
 			JsonObject playObject = play.getAsJsonObject();
 			getEvent(play);
-			log.atInfo().log("%s", playObject);
+//			log.atInfo().log("%s", playObject);
 		}
 		
 		return eventList;
@@ -42,9 +42,9 @@ public class LiveDataParser {
 	
 	public void getEvent(JsonElement playElement) {
 		JsonObject play = playElement.getAsJsonObject();
-		String eventElementType = play
-				.get("result").getAsJsonObject()
-				.get("event").getAsString();
+		JsonObject eventElementType = play
+				.get("result").getAsJsonObject();
+//		log.atInfo().log("Got event %s", play);
 		if(eventElementType.equals("Game Scheduled")) {
 			eventList.add(Event.GAME_SCHEDULED);
 		}

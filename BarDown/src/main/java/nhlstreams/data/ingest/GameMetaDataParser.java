@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.flogger.StackSize;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -16,8 +17,12 @@ import nhlstreams.data.model.Game;
 import nhlstreams.data.model.Player;
 import nhlstreams.data.model.Position;
 import nhlstreams.data.model.Status;
-import nhlstreams.data.model.Team;
-import nhlstreams.data.model.Venue;
+import nhlstreams.data.model.orgs.ConferenceNotFoundException;
+import nhlstreams.data.model.orgs.DivsionNotFoundException;
+import nhlstreams.data.model.orgs.Team;
+import nhlstreams.data.model.orgs.TeamNotFoundException;
+import nhlstreams.data.model.orgs.Venue;
+import nhlstreams.data.model.orgs.VenueNotFoundException;
 import nhlstreams.data.processing.DataUtils;
 
 @Flogger
@@ -33,16 +38,47 @@ public class GameMetaDataParser {
 	public Game parse() {
 		JsonObject gameData = gameObject.get("gameData").getAsJsonObject();
 		
-		getPlayerData(gameData.get("players"));
 		getGameMetadata(gameData.get("game"));
+		getHomeAwayTeams(gameData.get("teams"));
 		getGameStatus(gameData.get("status"));
 		getDatetime(gameData.get("datetime"));
+		getPlayerData(gameData.get("players"));
 		
 		return game;
 	}
 	
+	//{"id":13,"name":"Florida Panthers","link":"/api/v1/teams/13",
+	//"venue":{"id":5027,"name":"BB&T Center","link":"/api/v1/venues/5027",
+	//"city":"Sunrise","timeZone":{"id":"America/New_York","offset":-5,"tz":"EST"}},
+	//"abbreviation":"FLA","triCode":"FLA","teamName":"Panthers","locationName":"Florida",
+	//"firstYearOfPlay":"1993","division":{"id":17,"name":"Atlantic","link":"/api/v1/divisions/17"},
+	//"conference":{"id":6,"name":"Eastern","link":"/api/v1/conferences/6"},
+	//"franchise":{"franchiseId":33,"teamName":"Panthers","link":"/api/v1/franchises/33"},
+	//"shortName":"Florida","officialSiteUrl":"http://www.floridapanthers.com","franchiseId":33,"active":true}
+	public void getHomeAwayTeams(JsonElement teamElement) {
+		JsonObject awayTeamObject = teamElement.getAsJsonObject()
+				.get("away").getAsJsonObject();
+		
+		JsonObject homeTeamObject = teamElement.getAsJsonObject()
+				.get("home").getAsJsonObject();
+		
+		
+		try {
+			game.setHomeTeam(new Team(homeTeamObject));
+			game.setAwayTeam(new Team(awayTeamObject));
+		} catch (VenueNotFoundException | DivsionNotFoundException | TeamNotFoundException | ConferenceNotFoundException e) {
+			// TODO Auto-generated catch block
+			log.atSevere().withCause(e).withStackTrace(StackSize.FULL)
+				.log("Failed to iniliazie home/away teams \n%s \n%s", homeTeamObject, awayTeamObject);
+		}
+		
+		log.atInfo().log("Teams: \nHome: %s \nAway: %s", homeTeamObject, awayTeamObject);
+	}
+	
 	public void getPlayerData(JsonElement playerElement) throws NullPointerException {
-		Map<Integer, Player> players = new HashMap<>();
+		Map<Integer, Player> homePlayers = new HashMap<>();
+		Map<Integer, Player> awayPlayers = new HashMap<>();
+		
 		for (Entry<String, JsonElement> entry : playerElement.getAsJsonObject().entrySet()) {
 			Player player = new Player();
 			JsonObject playerObject = entry.getValue().getAsJsonObject();
@@ -73,12 +109,26 @@ public class GameMetaDataParser {
 			player.setCaptain(DataUtils.getField("captain", playerObject).getAsBoolean());
 			player.setRookie(DataUtils.getField("rookie", playerObject).getAsBoolean());
 			player.setRosterStatus(getRosterStatus(playerObject));
-			player.setCurrentTeam(new Team(DataUtils.getField("currentTeam", playerObject)));
+			player.setCurrentTeam(findTeam(DataUtils.getField("currentTeam", playerObject).getAsJsonObject()));
 			player.setHand(DataUtils.getField("shootsCatches", playerObject).getAsString());
 
-			players.put(player.getId(), player);
+			if(player.getCurrentTeam().getId() == game.getHomeTeam().getId()) {
+				homePlayers.put(player.getId(), player);
+			}else if(player.getCurrentTeam().getId() == game.getAwayTeam().getId()) {
+				awayPlayers.put(player.getId(), player);
+			}
 		}
-		game.setPlayers(players);
+		game.setHomePlayers(homePlayers);
+	}
+	
+	public Team findTeam(JsonObject cTeamObject) {
+		int currentTeamId = cTeamObject.get("id").getAsInt();
+		if(currentTeamId == game.getHomeTeam().getId()) {
+			return game.getHomeTeam();
+		}else if(currentTeamId == game.getAwayTeam().getId()) {
+			return game.getAwayTeam();
+		}
+		return null;
 	}
 
 	public Position getPosition(JsonObject playerObject) {
@@ -132,16 +182,6 @@ public class GameMetaDataParser {
 
 		game.setStartTime(startTime.toEpochSecond());
 		game.setEndTime(endTime.toEpochSecond());
-	}
-
-	// {"id":5098,"name":"Xcel Energy Center","link":"/api/v1/venues/5098"}
-	public Venue getVenueData(JsonObject venueObject) {
-		Venue venue = new Venue();
-		venue.setId(DataUtils.getField("id", venueObject).getAsInt());
-		venue.setName(DataUtils.getField("name", venueObject).getAsString());
-		venue.setLink(DataUtils.getField("link", venueObject).getAsString());
-
-		return venue;
 	}
 
 	public int getHeight(String heightString) {

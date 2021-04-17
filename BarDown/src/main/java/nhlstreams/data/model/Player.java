@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import lombok.Data;
+import nhlstreams.data.model.orgs.Team;
 
 @Data
 public class Player implements Serializable{
