@@ -126,10 +126,14 @@ public class DataController {
 								game.getScoreState().getHome());
 						
 				
-					}else if(game.getGameStatus() == Status.FINAL && !finishedGames.contains(game)) {
+					}else if(game.getGameStatus().statusCode == Status.FINAL.statusCode && !finishedGames.contains(game)) {
 						finishedGames.add(game);
+						log.atInfo().log("\n\nGame state for %s @ %s (%s): %s to %s\n",
+								game.getAwayTeam().getShortName(), game.getHomeTeam().getShortName(),
+								game.getGameStatus().abstractGameState, game.getScoreState().getAway(),
+								game.getScoreState().getHome());
 						
-					} else {
+					} else if(!finishedGames.contains(game)) {
 						log.atInfo().log("\n\nGame has not started %s vs %s. Start time: %s\n",
 								game.getHomeTeam().getShortName(),
 								game.getAwayTeam().getShortName(), 
@@ -154,21 +158,24 @@ public class DataController {
 		try {
 			DataParser parser = new DataParser();
 			httpEvent = dataCtl.get("/game/" + gamePk + "/feed/live");
-			JsonObject jsonObject = new JsonParser().parse(httpEvent.body()).getAsJsonObject();
-			parser.getGameMetaData(jsonObject);
+			JsonObject initialJsonObject = new JsonParser().parse(httpEvent.body()).getAsJsonObject();
+			parser.getGameMetaData(initialJsonObject);
 			Game game = parser.getGame();
 			
+			log.atInfo().log("\n\nGame state for %s @ %s (%s)",
+			game.getAwayTeam().getShortName(), game.getHomeTeam().getShortName(),
+			game.getGameStatus().abstractGameState);
+			
 			while(game.getGameStatus() != Status.FINAL) {
+				httpEvent = dataCtl.get("/game/" + gamePk + "/feed/live");
+				JsonObject jsonObject = new JsonParser().parse(httpEvent.body()).getAsJsonObject();
+				
 				if (game.getGameStatus() == Status.LIVE) {
 					
 					parser.getEvents(jsonObject);
 					game = parser.getGame();
 					
-					log.atInfo().log("\n\nGame state for %s @ %s (%s): %s to %s w/ %s to go in %s\n",
-							game.getAwayTeam().getShortName(), game.getHomeTeam().getShortName(),
-							game.getGameStatus().abstractGameState, 
-							game.getScoreState().getAway(), game.getScoreState().getHome(),
-							game.getGameClock(), game.getPeriod());
+
 					
 			
 				}else if(game.getGameStatus() == Status.FINAL) {

@@ -5,10 +5,10 @@ plugins {
 }
 
 
-group = 'com.nhlstreams'
+group = 'nhlstreams'
 version = '0.1.0'
-//mainClassName = 'com.nhlstreams.BarDown'
-description = 'NHL data processor in NRT from NifiScraper'
+mainClassName = 'nhlstreams.BarDown'
+description = 'NHL data processor in NRT'
 
 ext {
     javaVersion = '1.11'
@@ -54,5 +54,15 @@ test {
 
 application {
     mainClass = 'nhlstreams.BarDown'
+}
+
+jar {
+  manifest { 
+    attributes "Main-Class": "$mainClassName"
+  }  
+
+  from {
+    configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+  }
 }
 

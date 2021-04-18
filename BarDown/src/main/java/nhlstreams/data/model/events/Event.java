@@ -1,6 +1,7 @@
 package nhlstreams.data.model.events;
 
 import java.time.ZonedDateTime;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -170,7 +171,6 @@ public class Event {
 			log.atSevere().withCause(e).log("Failed to find %s in game...", eventObject.get("team").getAsString());
 		}
 	}
-	
 	
 	//TODO: fill out this method to make more readable.
 //	public String toString() {
