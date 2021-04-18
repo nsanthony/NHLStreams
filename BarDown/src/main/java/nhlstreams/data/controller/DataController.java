@@ -164,10 +164,11 @@ public class DataController {
 					parser.getEvents(jsonObject);
 					game = parser.getGame();
 					
-					log.atInfo().log("\n\nGame state for %s @ %s (%s): %s to %s\n",
+					log.atInfo().log("\n\nGame state for %s @ %s (%s): %s to %s w/ %s to go in %s\n",
 							game.getAwayTeam().getShortName(), game.getHomeTeam().getShortName(),
-							game.getGameStatus().abstractGameState, game.getScoreState().getAway(),
-							game.getScoreState().getHome());
+							game.getGameStatus().abstractGameState, 
+							game.getScoreState().getAway(), game.getScoreState().getHome(),
+							game.getGameClock(), game.getPeriod());
 					
 			
 				}else if(game.getGameStatus() == Status.FINAL) {

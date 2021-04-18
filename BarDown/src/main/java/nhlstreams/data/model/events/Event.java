@@ -46,12 +46,12 @@ public class Event {
 		this.type = getEventType(eventObject);
 		this.eventString = eventObject;
 
-		if (type.involvesPlayers && type != EventType.STOP) {
+		if (type.involvesPlayers && !type.id.equals(EventType.STOP.id)) {
 			getPlayers(eventObject);
 			getEventDetails(eventObject);
 			getEventCoords(eventObject);
 			getEventTeam(eventObject);
-		} else if (type.involvesPlayers && type == EventType.STOP) {
+		} else if (type.involvesPlayers && type.id.equals(EventType.STOP.id)) {
 			getEventDetails(eventObject);
 		}
 	}
@@ -134,6 +134,10 @@ public class Event {
 		String[] minutesSeconds = clockTime.split(":");
 		int secondsFromMinutes = 60 * Integer.valueOf(minutesSeconds[0]);
 		int seconds = Integer.valueOf(minutesSeconds[1]);
+		if((secondsFromMinutes + seconds) > game.getPeriodTime()) {
+			game.setGameClock(clockTime);
+			game.setPeriod(String.valueOf(period));
+		}
 		return secondsFromMinutes + seconds;
 	}
 
@@ -166,5 +170,11 @@ public class Event {
 			log.atSevere().withCause(e).log("Failed to find %s in game...", eventObject.get("team").getAsString());
 		}
 	}
+	
+	
+	//TODO: fill out this method to make more readable.
+//	public String toString() {
+//		return this.toString();
+//	}
 
 }

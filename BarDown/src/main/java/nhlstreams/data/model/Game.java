@@ -3,6 +3,7 @@ package nhlstreams.data.model;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import lombok.Data;
 import lombok.extern.flogger.Flogger;
@@ -28,7 +29,10 @@ public class Game implements Serializable{
 	private Team awayTeam;
 	private Team homeTeam;
 	private ScoreState scoreState = new ScoreState();
-	private Map<Integer, Event> gameEvents;
+	private int periodTime;
+	private String gameClock;
+	private String period;
+	private Map<Integer, Event> gameEvents = new HashMap<>();
 	
 	public Player getPlayerById(int id) throws PlayerNotFoundException {
 		if(homePlayers.containsKey(id)) {
@@ -50,6 +54,16 @@ public class Game implements Serializable{
 	}
 	
 	public void updateEvents(Map<Integer, Event> currentGameEvents) {
+		log.atInfo().log("updating events...");
+		Map<Integer, Event> diffEvents = new HashMap<>();
+		
+		for(Entry<Integer, Event> eventEntry: currentGameEvents.entrySet()) {
+			if(!gameEvents.containsValue(eventEntry.getValue())) {
+				diffEvents.put(eventEntry.getKey(), eventEntry.getValue());
+				log.atInfo().log("New event at %s (%s): %s by %s", eventEntry.getValue().getPeriodTime() , eventEntry.getKey(),
+						eventEntry.getValue().getType(), eventEntry.getValue().toString());
+			}
+		}
 		this.gameEvents = currentGameEvents;
 	}
 }

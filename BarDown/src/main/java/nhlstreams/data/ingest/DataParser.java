@@ -11,6 +11,7 @@ import nhlstreams.data.model.events.Event;
 @Data
 public class DataParser {
 	private Game game;
+	private Boolean firstPull = true;
 
 	// The objects are game, datetime, status, teams, players, venue.
 	public DataParser getGameMetaData(JsonObject gameObject) {
@@ -25,7 +26,12 @@ public class DataParser {
 		
 		Map<Integer, Event> eventList = parser.parse(liveData);
 		this.game = parser.getGame();
-		this.game.updateEvents(eventList);
+		if(firstPull == true) {
+			game.setGameEvents(eventList);
+			firstPull = false;
+		}else {
+			game.updateEvents(eventList);
+		}
 	}
 
 }
