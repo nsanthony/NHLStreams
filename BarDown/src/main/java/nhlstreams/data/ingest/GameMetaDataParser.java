@@ -164,7 +164,11 @@ public class GameMetaDataParser {
 		for(Status status: Status.values()) {
 			if(detailedCode.equals(status.abstractGameState)) {
 				game.setGameStatus(status);
+				break;
 			}
+		}
+		if (game.getGameStatus() == null){
+			game.setGameStatus(Status.NULL);
 		}
 	}
 

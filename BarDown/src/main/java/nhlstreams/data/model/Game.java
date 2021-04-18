@@ -21,7 +21,7 @@ public class Game implements Serializable{
 	private String pk;
 	private String season;
 	private String type;
-	private Status gameStatus;
+	private Status gameStatus = null;
 	private long startTime;
 	private long endTime;
 	private Map<Integer, Player> homePlayers = new HashMap<>();

@@ -1,5 +1,10 @@
 package nhlstreams;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
+import com.google.common.flogger.StackSize;
+
 import lombok.extern.flogger.Flogger;
 import nhlstreams.data.controller.DataController;
 
@@ -18,6 +23,7 @@ public class BarDown {
 //			log.atSevere().withCause(e).withStackTrace(StackSize.FULL)
 //				.log("Failed to get dail schedule...");
 //		}
+//		dataCtl.dailyRunner();
 		dataCtl.gameRunner("2020020715");
 		
 		
