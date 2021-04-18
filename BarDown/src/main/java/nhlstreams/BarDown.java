@@ -48,18 +48,20 @@ public class BarDown {
 
 					// Gson gson = new Gson();
 					// gson.toJson(jsonObject, new FileWriter(path));
-					Game thisgame = parser.getGameMetaData(jsonObject).getGame();
+					parser.getGameMetaData(jsonObject);
 					Map<Integer, Event> gameEvents = parser.getEvents(jsonObject);
+					Game thisgame = parser.getGame();
 					log.atInfo().log("Got this schedule: %s", thisgame.getPk());
 					
 					log.atInfo().log("\nGame state for %s @ %s (%s): %s to %s",
 							game.getAwayTeam().getShortName(), game.getHomeTeam().getShortName(),
-							game.getGameStatus().detailedGameState, 
+							game.getGameStatus().abstractGameState, 
 							game.getScoreState().getAway(), game.getScoreState().getHome());
+				}else {
+					log.atInfo().log("Game has not started %s vs %s \n%s < %s",
+							game.getHomeTeam().getShortName(), game.getAwayTeam().getShortName(),
+							currentTime.toEpochSecond(), game.getStartTime());
 				}
-				log.atInfo().log("Game has not started %s vs %s \n%s < %s",
-						game.getHomeTeam().getShortName(), game.getAwayTeam().getShortName(),
-						currentTime.toEpochSecond(), game.getStartTime());
 				//currentTime, Date.from(Instant.ofEpochSecond(game.getStartTime()))
 			}
 

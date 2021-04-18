@@ -1,6 +1,7 @@
 package nhlstreams.data.processing;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 
 import lombok.extern.flogger.Flogger;

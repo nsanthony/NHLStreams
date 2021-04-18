@@ -24,6 +24,7 @@ public class DataParser {
 		LiveDataParser parser = new LiveDataParser(liveData, game);
 		
 		Map<Integer, Event> eventList = parser.parse(liveData);
+		this.game = parser.getGame();
 //		log.atInfo().log("this is the event body: %s", eventList);
 		return eventList;
 	}

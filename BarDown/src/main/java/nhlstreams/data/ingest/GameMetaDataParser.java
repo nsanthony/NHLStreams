@@ -89,7 +89,7 @@ public class GameMetaDataParser {
 				player.setPrimaryPosition(getPosition(playerObject));
 				player.setFirstName(DataUtils.getField("firstName", playerObject).getAsString());
 				player.setLastName(DataUtils.getField("lastName", playerObject).getAsString());
-//				player.setPrimaryNumber(DataUtils.getField("primaryNumber", playerObject).getAsInt());
+				//player.setPrimaryNumber(DataUtils.getField("primaryNumber", playerObject).getAsInt());
 				player.setBirthDate(Date.valueOf(DataUtils.getField("birthDate", playerObject).getAsString()));
 				player.setCurrentAge(DataUtils.getField("currentAge", playerObject).getAsInt());
 				player.setBirthCity(DataUtils.getField("birthCity", playerObject).getAsString());

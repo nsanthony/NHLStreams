@@ -7,6 +7,9 @@ public enum EventType {
 	PERIOD_END("PERIOD_END", false),
 	PERIOD_OFFICIAL("PERIOD_OFFICIAL", false),
 	GAME_END("GAME_END", false),
+	GAME_OFFICIAL("GAME_OFFICIAL", false),
+	
+	CHALLENGE("CHALLENGE", false),
 	
 	FACEOFF("FACEOFF", true),
 	HIT("HIT", true),

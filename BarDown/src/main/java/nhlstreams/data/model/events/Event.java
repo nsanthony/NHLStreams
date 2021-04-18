@@ -154,9 +154,10 @@ public class Event {
 		if(!coordsObject.equals("null")) {
 			coords = new Coordinates();
 			JsonElement xcoords = DataUtils.getField("x", coordsObject.getAsJsonObject());
-			if(!xcoords.getAsJsonObject().get("x").equals("null")) {
-				coords.setX(coordsObject.getAsJsonObject().get("x").getAsDouble());
-				coords.setY(coordsObject.getAsJsonObject().get("y").getAsDouble());
+			JsonElement ycoords = DataUtils.getField("y", eventObject.getAsJsonObject());
+			if(!xcoords.getAsString().equals("null") && !ycoords.getAsString().equals("null")) {
+				coords.setX(xcoords.getAsDouble());
+				coords.setY(ycoords.getAsDouble());
 			}
 		}
 	}

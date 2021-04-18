@@ -49,7 +49,7 @@ public class DataControllerTests {
 			parser.getGameMetaData(jsonObject);
 			parser.getEvents(jsonObject);
 
-		} catch (URISyntaxException | IOException | InterruptedException e) {
+		} catch (URISyntaxException | IOException | InterruptedException | IllegalStateException e) {
 			log.atSevere().withCause(e).withStackTrace(StackSize.FULL)
 				.log("Failed to get event %s", event.body());
 		}
