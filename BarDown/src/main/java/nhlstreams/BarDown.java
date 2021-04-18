@@ -1,13 +1,9 @@
 package nhlstreams;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
-import java.sql.Time;
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -15,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.flogger.StackSize;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -37,12 +32,12 @@ public class BarDown {
 
 		DataController dataCtl = new DataController(baseUrl);
 		HttpResponse<String> httpEvent = null;
-		DataParser parser = new DataParser();
 		try {
 			List<Game> games = dataCtl.getDailySchedule();
 			ZonedDateTime currentTime = ZonedDateTime.now(ZoneId.systemDefault());
 			for (Game game : games) {
-				if ((game.getStartTime() -  currentTime.toEpochSecond() < 0)) {
+				if ((game.getStartTime() - currentTime.toEpochSecond() < 0)) {
+					DataParser parser = new DataParser();
 					httpEvent = dataCtl.get("/game/" + game.getPk() + "/feed/live");
 					JsonObject jsonObject = new JsonParser().parse(httpEvent.body()).getAsJsonObject();
 
@@ -50,19 +45,17 @@ public class BarDown {
 					// gson.toJson(jsonObject, new FileWriter(path));
 					parser.getGameMetaData(jsonObject);
 					Map<Integer, Event> gameEvents = parser.getEvents(jsonObject);
-					Game thisgame = parser.getGame();
-					log.atInfo().log("Got this schedule: %s", thisgame.getPk());
-					
-					log.atInfo().log("\nGame state for %s @ %s (%s): %s to %s",
-							game.getAwayTeam().getShortName(), game.getHomeTeam().getShortName(),
-							game.getGameStatus().abstractGameState, 
-							game.getScoreState().getAway(), game.getScoreState().getHome());
-				}else {
-					log.atInfo().log("Game has not started %s vs %s \n%s < %s",
-							game.getHomeTeam().getShortName(), game.getAwayTeam().getShortName(),
-							currentTime.toEpochSecond(), game.getStartTime());
+					Game thisGame = parser.getGame();
+					log.atInfo().log("\n\nGame state for %s @ %s (%s): %s to %s\n",
+							thisGame.getAwayTeam().getShortName(), thisGame.getHomeTeam().getShortName(),
+							thisGame.getGameStatus().abstractGameState, thisGame.getScoreState().getAway(),
+							thisGame.getScoreState().getHome());
+				} else {
+					log.atInfo().log("\n\nGame has not started %s vs %s. Start time: %s\n",
+							game.getHomeTeam().getShortName(),
+							game.getAwayTeam().getShortName(), 
+							Date.from(Instant.ofEpochSecond(game.getStartTime())));
 				}
-				//currentTime, Date.from(Instant.ofEpochSecond(game.getStartTime()))
 			}
 
 		} catch (URISyntaxException | IOException | InterruptedException | IllegalStateException e) {

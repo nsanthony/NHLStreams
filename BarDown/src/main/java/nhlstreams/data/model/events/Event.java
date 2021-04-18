@@ -46,12 +46,12 @@ public class Event {
 		this.type = getEventType(eventObject);
 		this.eventString = eventObject;
 
-		if(type.involvesPlayers && type != EventType.STOP) {
+		if (type.involvesPlayers && type != EventType.STOP) {
 			getPlayers(eventObject);
 			getEventDetails(eventObject);
 			getEventCoords(eventObject);
 			getEventTeam(eventObject);
-		}else if(type.involvesPlayers && type == EventType.STOP) {
+		} else if (type.involvesPlayers && type == EventType.STOP) {
 			getEventDetails(eventObject);
 		}
 	}
@@ -75,22 +75,18 @@ public class Event {
 		try {
 			JsonArray playerArray = eventObject.get("players").getAsJsonArray();
 			for (JsonElement playerElement : playerArray) {
-				int id = playerElement.getAsJsonObject()
-						.get("player").getAsJsonObject()
-						.get("id").getAsInt();
+				int id = playerElement.getAsJsonObject().get("player").getAsJsonObject().get("id").getAsInt();
 				Player player;
 				try {
 					player = game.getPlayerById(id);
 					eventPlayers.put(id, player);
 				} catch (PlayerNotFoundException e) {
-					log.atSevere().withCause(e).log("Failed to find player %s...",
-							playerElement.getAsJsonObject()
-							.get("player").getAsJsonObject()
-							.get("fullName").getAsString());
+					log.atSevere().withCause(e).log("Failed to find player %s...", playerElement.getAsJsonObject()
+							.get("player").getAsJsonObject().get("fullName").getAsString());
 				}
-	
+
 			}
-		}catch(NullPointerException e) {
+		} catch (NullPointerException e) {
 			log.atSevere().withCause(e).log("Failed to get players for %s", eventObject);
 		}
 
@@ -151,11 +147,11 @@ public class Event {
 
 	private void getEventCoords(JsonObject eventObject) {
 		JsonElement coordsObject = DataUtils.getField("coordinates", eventObject);
-		if(!coordsObject.equals("null")) {
+		if (!coordsObject.equals("null")) {
 			coords = new Coordinates();
 			JsonElement xcoords = DataUtils.getField("x", coordsObject.getAsJsonObject());
 			JsonElement ycoords = DataUtils.getField("y", eventObject.getAsJsonObject());
-			if(!xcoords.getAsString().equals("null") && !ycoords.getAsString().equals("null")) {
+			if (!xcoords.getAsString().equals("null") && !ycoords.getAsString().equals("null")) {
 				coords.setX(xcoords.getAsDouble());
 				coords.setY(ycoords.getAsDouble());
 			}
@@ -163,9 +159,7 @@ public class Event {
 	}
 
 	private void getEventTeam(JsonObject eventObject) {
-		int eventTeamId = eventObject
-				.get("team").getAsJsonObject()
-				.get("id").getAsInt();
+		int eventTeamId = eventObject.get("team").getAsJsonObject().get("id").getAsInt();
 		try {
 			this.team = game.getTeamById(eventTeamId);
 		} catch (TeamNotFoundException e) {

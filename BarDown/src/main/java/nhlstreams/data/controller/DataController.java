@@ -81,7 +81,6 @@ public class DataController {
 					.get("datetime"));
 		
 			Game game = parser.parse();
-//			Game game = parser.getGame();
 			gameList.add(game);
 		}
 		return gameList;

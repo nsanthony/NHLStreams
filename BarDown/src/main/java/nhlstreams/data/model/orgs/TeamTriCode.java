@@ -27,7 +27,12 @@ public enum TeamTriCode {
 	PIT("PIT"),
 	BUF("BUF"),
 	OTT("OTT"),
-	MTL("MTL");
+	MTL("MTL"),
+	VGK("VGK"),
+	ANA("ANA"),
+	VAN("VAN"),
+	LAK("LAK");
+	
 	
 	public String triCode;
 	TeamTriCode(String triCode){

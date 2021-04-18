@@ -25,6 +25,11 @@ public enum Venue {
 	PPG(5034, "PPG Paints Arena", "Pittsburgh"),
 	BCR(5028, "Bell Centre", "Montréal"),
 	CTC(5031, "Canadian Tire Centre", "Ottawa"),
+	HON(5046, "Honda Center", "Aneheim"),
+	TMA(5178, "T-Mobile Arena", "Las Vegas"),
+	ROG(5073, "Rogers Arena", "Vancouver"),
+	BALL(5064, "Ball Arena", "Denver"),
+	STAPLES(5081, "STAPLES Center", "Los Angeles"),
 	
 	NULL(0, "null", "null");
 	

@@ -159,13 +159,18 @@ public class GameMetaDataParser {
 	}
 
 	public void getGameStatus(JsonElement statusElement) {
-		String detailedCode = DataUtils.getField("detailedState", statusElement.getAsJsonObject()).getAsString();
+		String detailedCode = DataUtils.getField("abstractGameState", statusElement.getAsJsonObject()).getAsString();
 		
 		switch (detailedCode) {
 		case "Final":
 			game.setGameStatus(Status.FINAL);
+			break;
+		case "Live":
+			game.setGameStatus(Status.LIVE);
+			break;
 		default:
 			game.setGameStatus(Status.FINAL);
+			break;
 		}
 	}
 

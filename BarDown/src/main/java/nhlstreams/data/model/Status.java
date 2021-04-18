@@ -1,7 +1,8 @@
 package nhlstreams.data.model;
 
 public enum Status {
-	FINAL("Final", 7, "Final", 7, false);
+	FINAL("Final", 7, "Final", 7, false),
+	LIVE("Live", 3, "In Progress", 3, false);
 	
 	public String abstractGameState;
 	public int codedGameState;
