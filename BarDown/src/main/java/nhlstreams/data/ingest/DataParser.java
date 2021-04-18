@@ -13,9 +13,10 @@ public class DataParser {
 	private Game game;
 
 	// The objects are game, datetime, status, teams, players, venue.
-	public void getGameMetaData(JsonObject gameObject) {
+	public DataParser getGameMetaData(JsonObject gameObject) {
 		GameMetaDataParser metadataParser = new GameMetaDataParser(gameObject);
 		this.game = metadataParser.parse();
+		return this;
 	}
 	
 	public Map<Integer, Event> getEvents(JsonObject gameObject) {

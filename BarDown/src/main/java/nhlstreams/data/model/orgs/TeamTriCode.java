@@ -6,7 +6,28 @@ public enum TeamTriCode {
 	TBL("TBL"),
 	WSH("WSH"),
 	NYI("NYI"),
-	BOS("BOS");
+	BOS("BOS"),
+	STL("STL"),
+	ARI("ARI"),
+	EDM("EDM"),
+	WPG("WPG"),
+	CAR("CAR"),
+	NSH("NSH"),
+	FLA("FLA"),
+	CHI("CHI"),
+	DET("DET"),
+	SJS("SJS"),
+	MIN("MIN"),
+	DAL("DAL"),
+	COL("COL"),
+	CBJ("CBJ"),
+	NYR("NYR"),
+	NJD("NJD"),
+	PHI("PHI"),
+	PIT("PIT"),
+	BUF("BUF"),
+	OTT("OTT"),
+	MTL("MTL");
 	
 	public String triCode;
 	TeamTriCode(String triCode){

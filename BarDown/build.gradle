@@ -1,10 +1,3 @@
-buildscript {
-    repositories {
-        jcenter() // this applies only to the Gradle 'Shadow' plugin
-    }
-}
-
-
 plugins {
     id 'java'
     id 'application'
@@ -14,7 +7,7 @@ plugins {
 
 group = 'com.nhlstreams'
 version = '0.1.0'
-mainClassName = 'com.nhlstreams.BarDown'
+//mainClassName = 'com.nhlstreams.BarDown'
 description = 'NHL data processor in NRT from NifiScraper'
 
 ext {
@@ -59,12 +52,7 @@ test {
 	systemProperties = ['java.util.logging.config.file' : 'logging.properties']    
 }
 
-jar {
-    manifest {
-        attributes 'Built-By': System.getProperty('user.name'),
-                'Build-Jdk': System.getProperty('java.version')
-    }
+application {
+    mainClass = 'nhlstreams.BarDown'
 }
-
-
 

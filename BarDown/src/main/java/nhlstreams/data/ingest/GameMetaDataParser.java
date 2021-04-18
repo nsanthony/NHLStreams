@@ -12,6 +12,7 @@ import com.google.common.flogger.StackSize;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import lombok.Data;
 import lombok.extern.flogger.Flogger;
 import nhlstreams.data.model.Game;
 import nhlstreams.data.model.Player;
@@ -22,16 +23,16 @@ import nhlstreams.data.model.exceptions.DivsionNotFoundException;
 import nhlstreams.data.model.exceptions.TeamNotFoundException;
 import nhlstreams.data.model.exceptions.VenueNotFoundException;
 import nhlstreams.data.model.orgs.Team;
-import nhlstreams.data.model.orgs.Venue;
 import nhlstreams.data.processing.DataUtils;
 
 @Flogger
+@Data
 public class GameMetaDataParser {
 	
 	private Game game = new Game();
 	private JsonObject gameObject;
 	
-	GameMetaDataParser(JsonObject gameObject){
+	public GameMetaDataParser(JsonObject gameObject){
 		this.gameObject = gameObject;
 	}
 	
@@ -66,10 +67,11 @@ public class GameMetaDataParser {
 		try {
 			game.setHomeTeam(new Team(homeTeamObject));
 			game.setAwayTeam(new Team(awayTeamObject));
-		} catch (VenueNotFoundException | DivsionNotFoundException | TeamNotFoundException | ConferenceNotFoundException e) {
+		} catch (VenueNotFoundException | DivsionNotFoundException | 
+				TeamNotFoundException | ConferenceNotFoundException e) {
 			// TODO Auto-generated catch block
 			log.atSevere().withCause(e).withStackTrace(StackSize.FULL)
-				.log("Failed to iniliazie home/away teams \n%s \n%s", homeTeamObject, awayTeamObject);
+				.log("Failed to iniliazie home/away teams \n%s \n\n%s", homeTeamObject, awayTeamObject);
 		}
 	}
 	
@@ -80,34 +82,38 @@ public class GameMetaDataParser {
 		for (Entry<String, JsonElement> entry : playerElement.getAsJsonObject().entrySet()) {
 			Player player = new Player();
 			JsonObject playerObject = entry.getValue().getAsJsonObject();
-
-			player.setId(DataUtils.getField("id", playerObject).getAsInt());
-			player.setFullName(DataUtils.getField("fullName", playerObject).getAsString());
-			player.setLink(DataUtils.getField("link", playerObject).getAsString());
-			player.setPrimaryPosition(getPosition(playerObject));
-			player.setFirstName(DataUtils.getField("firstName", playerObject).getAsString());
-			player.setLastName(DataUtils.getField("lastName", playerObject).getAsString());
-			player.setPrimaryNumber(DataUtils.getField("primaryNumber", playerObject).getAsInt());
-			player.setBirthDate(Date.valueOf(DataUtils.getField("birthDate", playerObject).getAsString()));
-			player.setCurrentAge(DataUtils.getField("currentAge", playerObject).getAsInt());
-			player.setBirthCity(DataUtils.getField("birthCity", playerObject).getAsString());
-			player.setBirthStateProvince(DataUtils.getField("birthStateProvince", playerObject).getAsString());
-			player.setBirthCountry(DataUtils.getField("birthCountry", playerObject).getAsString());
-			player.setNationality(DataUtils.getField("nationality", playerObject).getAsString());
-			player.setHieght(getHeight(DataUtils.getField("height", playerObject).getAsString()));
-			player.setWeight(DataUtils.getField("weight", playerObject).getAsInt());
-			player.setActive(DataUtils.getField("active", playerObject).getAsBoolean());
-			player.setAltCaptain(DataUtils.getField("alternateCaptain", playerObject).getAsBoolean());
-			player.setCaptain(DataUtils.getField("captain", playerObject).getAsBoolean());
-			player.setRookie(DataUtils.getField("rookie", playerObject).getAsBoolean());
-			player.setRosterStatus(getRosterStatus(playerObject));
-			player.setCurrentTeam(findTeam(DataUtils.getField("currentTeam", playerObject).getAsJsonObject()));
-			player.setHand(DataUtils.getField("shootsCatches", playerObject).getAsString());
-
-			if(player.getCurrentTeam().getId() == game.getHomeTeam().getId()) {
-				homePlayers.put(player.getId(), player);
-			}else if(player.getCurrentTeam().getId() == game.getAwayTeam().getId()) {
-				awayPlayers.put(player.getId(), player);
+			try {
+				player.setId(DataUtils.getField("id", playerObject).getAsInt());
+				player.setFullName(DataUtils.getField("fullName", playerObject).getAsString());
+				player.setLink(DataUtils.getField("link", playerObject).getAsString());
+				player.setPrimaryPosition(getPosition(playerObject));
+				player.setFirstName(DataUtils.getField("firstName", playerObject).getAsString());
+				player.setLastName(DataUtils.getField("lastName", playerObject).getAsString());
+//				player.setPrimaryNumber(DataUtils.getField("primaryNumber", playerObject).getAsInt());
+				player.setBirthDate(Date.valueOf(DataUtils.getField("birthDate", playerObject).getAsString()));
+				player.setCurrentAge(DataUtils.getField("currentAge", playerObject).getAsInt());
+				player.setBirthCity(DataUtils.getField("birthCity", playerObject).getAsString());
+				player.setBirthStateProvince(DataUtils.getField("birthStateProvince", playerObject).getAsString());
+				player.setBirthCountry(DataUtils.getField("birthCountry", playerObject).getAsString());
+				player.setNationality(DataUtils.getField("nationality", playerObject).getAsString());
+				player.setHieght(getHeight(DataUtils.getField("height", playerObject).getAsString()));
+				player.setWeight(DataUtils.getField("weight", playerObject).getAsInt());
+				//player.setActive(DataUtils.getField("active", playerObject).getAsBoolean()); //bug with this not always being there
+				player.setAltCaptain(DataUtils.getField("alternateCaptain", playerObject).getAsBoolean());
+				player.setCaptain(DataUtils.getField("captain", playerObject).getAsBoolean());
+				player.setRookie(DataUtils.getField("rookie", playerObject).getAsBoolean());
+				player.setRosterStatus(getRosterStatus(playerObject));
+				player.setCurrentTeam(findTeam(DataUtils.getField("currentTeam", playerObject).getAsJsonObject()));
+				player.setHand(DataUtils.getField("shootsCatches", playerObject).getAsString());
+	
+				if(player.getCurrentTeam().getId() == game.getHomeTeam().getId()) {
+					homePlayers.put(player.getId(), player);
+				}else if(player.getCurrentTeam().getId() == game.getAwayTeam().getId()) {
+					awayPlayers.put(player.getId(), player);
+				}
+			}catch (NumberFormatException e) {
+				log.atSevere().withCause(e).withStackTrace(StackSize.FULL)
+					.log("Failed to read field...");
 			}
 		}
 		game.setHomePlayers(homePlayers);
@@ -171,10 +177,12 @@ public class GameMetaDataParser {
 		String endTimeString = DataUtils.getField("endDateTime", datetimeObject).getAsString();
 		
 		ZonedDateTime startTime = ZonedDateTime.parse(startTimeString);
-		ZonedDateTime endTime = ZonedDateTime.parse(endTimeString);
-
 		game.setStartTime(startTime.toEpochSecond());
-		game.setEndTime(endTime.toEpochSecond());
+		
+		if(!endTimeString.equals("null")) {
+			ZonedDateTime endTime = ZonedDateTime.parse(endTimeString);
+			game.setEndTime(endTime.toEpochSecond());
+		}
 	}
 
 	public int getHeight(String heightString) {

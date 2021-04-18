@@ -150,10 +150,15 @@ public class Event {
 	}
 
 	private void getEventCoords(JsonObject eventObject) {
-		JsonObject coordsObject = eventObject.get("coordinates").getAsJsonObject();
-		coords = new Coordinates();
-		coords.setX(coordsObject.get("x").getAsDouble());
-		coords.setY(coordsObject.get("y").getAsDouble());
+		JsonElement coordsObject = DataUtils.getField("coordinates", eventObject);
+		if(!coordsObject.equals("null")) {
+			coords = new Coordinates();
+			JsonElement xcoords = DataUtils.getField("x", coordsObject.getAsJsonObject());
+			if(!xcoords.getAsJsonObject().get("x").equals("null")) {
+				coords.setX(coordsObject.getAsJsonObject().get("x").getAsDouble());
+				coords.setY(coordsObject.getAsJsonObject().get("y").getAsDouble());
+			}
+		}
 	}
 
 	private void getEventTeam(JsonObject eventObject) {

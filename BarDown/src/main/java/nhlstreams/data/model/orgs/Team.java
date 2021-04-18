@@ -52,14 +52,19 @@ public class Team {
 	}
 
 	private void findVenue(JsonObject venueObject) throws VenueNotFoundException {
-		int id = DataUtils.getField("id", venueObject).getAsInt();
-		for (Venue venue : Venue.values()) {
-			if (id == venue.id) {
-				this.arena = venue;
+		JsonElement idElement = DataUtils.getField("id", venueObject);
+		if(!idElement.getAsString().equals("null")) {
+			int id = idElement.getAsInt();
+			for (Venue venue : Venue.values()) {
+				if (id == venue.id) {
+					this.arena = venue;
+				}
 			}
-		}
-		if (arena == null) {
-			throw new VenueNotFoundException();
+			if (arena == null) {
+				throw new VenueNotFoundException(venueObject);
+			}
+		}else {
+			this.arena = Venue.NULL;
 		}
 	}
 

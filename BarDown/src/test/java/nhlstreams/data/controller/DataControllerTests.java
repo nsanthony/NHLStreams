@@ -40,7 +40,7 @@ public class DataControllerTests {
 		HttpResponse<String> event = null;
 		DataParser parser = new DataParser();
 		try {
-			event = dataCtl.getLatestEvent(eventExtension);
+			event = dataCtl.get(eventExtension);
 			JsonObject jsonObject = new JsonParser().parse(event.body()).getAsJsonObject();
 			
 			Gson gson = new Gson();
