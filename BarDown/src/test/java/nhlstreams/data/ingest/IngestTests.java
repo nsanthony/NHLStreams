@@ -2,27 +2,25 @@ package nhlstreams.data.ingest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
-import com.google.common.flogger.FluentLogger;
-
-import nhlstreams.BarDown;
+import com.google.gson.JsonObject;
 
 public class IngestTests {
-	private static final FluentLogger logger = FluentLogger.forEnclosingClass();   	
+	
+	@Mock
+	JsonObject gameObject;
 	
 	@Test
-	public void testIntReturn() {
-		int returnedValue = DataIngester.testingThis();
-		assertEquals(2, returnedValue);
-	}
-	
-	@Test
-	public void returnString() {
-		String testString = "test";
-		String returnedString = DataIngester.parseData(testString);
+	public void testHeightConverter() {
+		String hString = "6' 1\"";
+		int hInCm = 185;
 		
-		assertEquals(testString, returnedString);
+		GameMetaDataParser parser = new GameMetaDataParser(gameObject);
+		double convertedHeight = parser.getHeight(hString);
+		
+		assertEquals(hInCm, convertedHeight, 1);
+		
 	}
 }

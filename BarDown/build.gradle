@@ -1,20 +1,13 @@
-buildscript {
-    repositories {
-        jcenter() // this applies only to the Gradle 'Shadow' plugin
-    }
-}
-
-
 plugins {
     id 'java'
     id 'application'
-    // shadow plugin to produce fat JARs
+    id "io.freefair.lombok" version "6.0.0-m2"
 }
 
 
 group = 'com.nhlstreams'
 version = '0.1.0'
-mainClassName = 'com.nhlstreams.BarDown'
+//mainClassName = 'com.nhlstreams.BarDown'
 description = 'NHL data processor in NRT from NifiScraper'
 
 ext {
@@ -29,6 +22,8 @@ tasks.withType(JavaCompile) {
 
 
 
+
+
 repositories {
     mavenCentral()
     mavenLocal()
@@ -40,10 +35,12 @@ repositories {
 
 dependencies {
 	implementation group: 'org.fluentd', name: 'fluent-logger', version: '0.3.3'
-	implementation group: 'com.google.flogger', name: 'flogger-system-backend', version: '0.5.1'
+	implementation 'com.google.flogger:flogger-system-backend:0.5.1'
 	implementation "com.google.code.gson:gson:2.7"
 	
 	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+	testImplementation 'org.mockito:mockito-inline:3.7.7'
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.7.7'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 }
 
@@ -52,14 +49,10 @@ run.classpath = sourceSets.main.runtimeClasspath
 
 test {
     useJUnitPlatform()
+	systemProperties = ['java.util.logging.config.file' : 'logging.properties']    
 }
 
-jar {
-    manifest {
-        attributes 'Built-By': System.getProperty('user.name'),
-                'Build-Jdk': System.getProperty('java.version')
-    }
+application {
+    mainClass = 'nhlstreams.BarDown'
 }
-
-
 
