@@ -154,21 +154,26 @@ public class DataController {
 		try {
 			DataParser parser = new DataParser();
 			httpEvent = dataCtl.get("/game/" + gamePk + "/feed/live");
-			JsonObject jsonObject = new JsonParser().parse(httpEvent.body()).getAsJsonObject();
-			parser.getGameMetaData(jsonObject);
+			JsonObject initialJsonObject = new JsonParser().parse(httpEvent.body()).getAsJsonObject();
+			parser.getGameMetaData(initialJsonObject);
 			Game game = parser.getGame();
 			
+//			log.atInfo().log("\n\nGame state for %s @ %s (%s): %s to %s w/ %s to go in %s\n",
+//			game.getAwayTeam().getShortName(), game.getHomeTeam().getShortName(),
+//			game.getGameStatus().abstractGameState, 
+//			game.getScoreState().getAway(), game.getScoreState().getHome(),
+//			game.getGameClock(), game.getPeriod());
+			
 			while(game.getGameStatus() != Status.FINAL) {
+				httpEvent = dataCtl.get("/game/" + gamePk + "/feed/live");
+				JsonObject jsonObject = new JsonParser().parse(httpEvent.body()).getAsJsonObject();
+				
 				if (game.getGameStatus() == Status.LIVE) {
 					
 					parser.getEvents(jsonObject);
 					game = parser.getGame();
 					
-					log.atInfo().log("\n\nGame state for %s @ %s (%s): %s to %s w/ %s to go in %s\n",
-							game.getAwayTeam().getShortName(), game.getHomeTeam().getShortName(),
-							game.getGameStatus().abstractGameState, 
-							game.getScoreState().getAway(), game.getScoreState().getHome(),
-							game.getGameClock(), game.getPeriod());
+
 					
 			
 				}else if(game.getGameStatus() == Status.FINAL) {

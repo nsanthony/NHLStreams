@@ -54,16 +54,25 @@ public class Game implements Serializable{
 	}
 	
 	public void updateEvents(Map<Integer, Event> currentGameEvents) {
-		log.atInfo().log("updating events...");
 		Map<Integer, Event> diffEvents = new HashMap<>();
+		boolean updated = false;
 		
 		for(Entry<Integer, Event> eventEntry: currentGameEvents.entrySet()) {
 			if(!gameEvents.containsValue(eventEntry.getValue())) {
 				diffEvents.put(eventEntry.getKey(), eventEntry.getValue());
-				log.atInfo().log("New event at %s (%s): %s by %s", eventEntry.getValue().getPeriodTime() , eventEntry.getKey(),
-						eventEntry.getValue().getType(), eventEntry.getValue().toString());
+				log.atInfo().log("New event at %s (%s): %s", eventEntry.getValue().getPeriodTime() , eventEntry.getKey(),
+						eventEntry.getValue().getType());
+				updated = true;
 			}
 		}
-		this.gameEvents = currentGameEvents;
+		
+		if(updated == true) {
+			log.atInfo().log("\n\nGame state for %s @ %s (%s): %s to %s w/ %s to go in %s\n",
+					awayTeam.getShortName(), homeTeam.getShortName(),
+					gameStatus.abstractGameState, 
+					scoreState.getAway(), scoreState.getHome(),
+					gameClock, period);
+			this.gameEvents = currentGameEvents;
+		}
 	}
 }
