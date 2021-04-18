@@ -19,14 +19,13 @@ public class DataParser {
 		return this;
 	}
 	
-	public Map<Integer, Event> getEvents(JsonObject gameObject) {
+	public void getEvents(JsonObject gameObject) {
 		JsonObject liveData = gameObject.get("liveData").getAsJsonObject();
 		LiveDataParser parser = new LiveDataParser(liveData, game);
 		
 		Map<Integer, Event> eventList = parser.parse(liveData);
 		this.game = parser.getGame();
-//		log.atInfo().log("this is the event body: %s", eventList);
-		return eventList;
+		this.game.updateEvents(eventList);
 	}
 
 }

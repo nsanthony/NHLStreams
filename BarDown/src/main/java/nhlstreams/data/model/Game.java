@@ -6,6 +6,7 @@ import java.util.Map;
 
 import lombok.Data;
 import lombok.extern.flogger.Flogger;
+import nhlstreams.data.model.events.Event;
 import nhlstreams.data.model.events.ScoreState;
 import nhlstreams.data.model.exceptions.PlayerNotFoundException;
 import nhlstreams.data.model.exceptions.TeamNotFoundException;
@@ -27,6 +28,7 @@ public class Game implements Serializable{
 	private Team awayTeam;
 	private Team homeTeam;
 	private ScoreState scoreState = new ScoreState();
+	private Map<Integer, Event> gameEvents;
 	
 	public Player getPlayerById(int id) throws PlayerNotFoundException {
 		if(homePlayers.containsKey(id)) {
@@ -45,5 +47,9 @@ public class Game implements Serializable{
 		}else {
 			throw new TeamNotFoundException();
 		}
+	}
+	
+	public void updateEvents(Map<Integer, Event> currentGameEvents) {
+		this.gameEvents = currentGameEvents;
 	}
 }
