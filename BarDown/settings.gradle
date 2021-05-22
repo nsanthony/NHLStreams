@@ -1,1 +1,4 @@
 rootProject.name = 'BarDown'
+
+include 'data-controller'
+include 'common'

@@ -16,15 +16,15 @@ public class BarDown {
 	public static void main(String[] args) {
 
 		DataController dataCtl = new DataController(baseUrl);
-//		try {
-//			dataCtl.getDailySchedule();
-//		} catch (URISyntaxException | IOException | InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			log.atSevere().withCause(e).withStackTrace(StackSize.FULL)
-//				.log("Failed to get dail schedule...");
-//		}
+		try {
+			dataCtl.getDailySchedule();
+		} catch (URISyntaxException | IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			log.atSevere().withCause(e).withStackTrace(StackSize.FULL)
+				.log("Failed to get dail schedule...");
+		}
 //		dataCtl.dailyRunner();
-		dataCtl.gameRunner("2020020715");
+//		dataCtl.gameRunner("2020020715");
 		
 		
 	}

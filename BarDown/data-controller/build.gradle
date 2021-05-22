@@ -1,0 +1,13 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+
+dependencies {
+	implementation('org.fluentd:fluent-logger')
+	implementation 'com.google.flogger:flogger-system-backend'
+
+	testImplementation 'org.junit.jupiter:junit-jupiter-api'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
