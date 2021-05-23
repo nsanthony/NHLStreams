@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>BarDown</name>
-	<comment>Project BarDown created by Buildship.</comment>
+	<name>data-controller</name>
+	<comment>Project data-controller created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
@@ -20,11 +20,4 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>java</name>
-			<type>2</type>
-			<location>/Users/nsanthony/workspace/NHLStreams/BarDown/data-controller/src/main/java</location>
-		</link>
-	</linkedResources>
 </projectDescription>

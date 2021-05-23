@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'java-library'
     id 'application'
-    id "io.freefair.lombok" version "6.0.0-m2"
+    //id "io.freefair.lombok" version "6.0.0-m2"
 }
 
 
@@ -31,15 +31,26 @@ allprojects{
 	    maven { url "https://repository.apache.org/content/repositories/snapshots/" }
 	    maven { url "https://mvnrepository.com/artifact/org.fluentd/fluent-logger" }
 	}
+}
 
 
 
 
-	dependencies {
-		// https://mvnrepository.com/artifact/org.fluentd/fluent-logger
-		implementation group: 'org.fluentd', name: 'fluent-logger', version: '0.3.4'
+allprojects {
+	apply plugin: 'java'
+	
+    dependencies {
+    
+    	compileOnly 'org.projectlombok:lombok:1.18.20'
+		annotationProcessor 'org.projectlombok:lombok:1.18.20'
+	
+		testCompileOnly 'org.projectlombok:lombok:1.18.20'
+		testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+
+		implementation 'org.slf4j:slf4j-api:1.7.26'
+		implementation 'org.fluentd:fluent-logger:0.3.4'
 		implementation 'com.google.flogger:flogger-system-backend:0.5.1'
-		implementation "com.google.code.gson:gson:2.7"
+		implementation 'com.google.code.gson:gson:2.7'
 		
 		testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
 		testImplementation 'org.mockito:mockito-inline:3.7.7'
