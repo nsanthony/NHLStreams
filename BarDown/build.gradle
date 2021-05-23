@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'java-library'
     id 'application'
     id "io.freefair.lombok" version "6.0.0-m2"
 }
@@ -30,12 +31,13 @@ allprojects{
 	    maven { url "https://repository.apache.org/content/repositories/snapshots/" }
 	    maven { url "https://mvnrepository.com/artifact/org.fluentd/fluent-logger" }
 	}
-}
+
 
 
 
 	dependencies {
-		implementation( group: 'org.fluentd', name: 'fluent-logger', version: '0.3.3')
+		// https://mvnrepository.com/artifact/org.fluentd/fluent-logger
+		implementation group: 'org.fluentd', name: 'fluent-logger', version: '0.3.4'
 		implementation 'com.google.flogger:flogger-system-backend:0.5.1'
 		implementation "com.google.code.gson:gson:2.7"
 		
@@ -44,6 +46,7 @@ allprojects{
 	    testImplementation 'org.mockito:mockito-junit-jupiter:3.7.7'
 	    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 	}
+}
 
 
 run.classpath = sourceSets.main.runtimeClasspath
