@@ -13,7 +13,7 @@
 
 
 dependencies {
-	implementation 'org.fluentd:fluent-logger'
+	//implementation 'org.fluentd:fluent-logger'
 	implementation 'com.google.flogger:flogger-system-backend'
 	annotationProcessor 'org.projectlombok:lombok'
 

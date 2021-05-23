@@ -30,11 +30,10 @@ allprojects{
 	    maven { url "https://repository.apache.org/content/repositories/snapshots/" }
 	    maven { url "https://mvnrepository.com/artifact/org.fluentd/fluent-logger" }
 	}
-}
 
 
 
-allprojects {
+
 	apply plugin: 'java'
 	apply plugin: 'java-library'
 	apply plugin: 'application'
@@ -56,29 +55,31 @@ allprojects {
 	    testImplementation 'org.mockito:mockito-junit-jupiter:3.7.7'
 	    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 	}
+
 }
 
 
-
-
-run.classpath = sourceSets.main.runtimeClasspath
-
-test {
-    useJUnitPlatform()
-	systemProperties = ['java.util.logging.config.file' : 'logging.properties']    
+	run.classpath = sourceSets.main.runtimeClasspath
+	
+	test {
+	    useJUnitPlatform()
+		systemProperties = ['java.util.logging.config.file' : 'logging.properties']    
+	}
+	
+	application {
+	    mainClass = 'nhlstreams.BarDown'
+	}
+	
+allprojects{
+	jar {
+		from {
+			configurations.runtimeClasspath.findAll { it.name.endsWith('jar') }.collect { zipTree(it) }
+			//configurations.runtimeClasspath.collect { it.isDirectory('jar') ? it : zipTree(it) }
+		}
+		//from {
+		//	configurations.runtimeClasspath.collect { it.isDirectory('jar') ? it : zipTree(it) }
+		//}
+	}
 }
 
-application {
-    mainClass = 'nhlstreams.BarDown'
-}
-
-jar {
-  manifest { 
-    attributes "Main-Class": "$mainClassName"
-  }  
-
-  from {
-    configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-  }
-}
 
