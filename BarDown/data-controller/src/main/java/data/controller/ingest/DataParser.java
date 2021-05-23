@@ -4,8 +4,8 @@ import java.util.Map;
 
 import com.google.gson.JsonObject;
 
-import data.controller.model.Game;
-import data.controller.model.events.Event;
+import common.model.Game;
+import common.model.events.Event;
 import lombok.Data;
 
 @Data

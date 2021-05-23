@@ -1,4 +1,4 @@
-package data.controller.model.events;
+package common.model.events;
 
 import java.time.ZonedDateTime;
 import java.util.HashMap;
@@ -9,14 +9,14 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import data.controller.model.Game;
-import data.controller.model.Player;
-import data.controller.model.exceptions.EventTypeUnknownException;
-import data.controller.model.exceptions.PeriodTypeNotFoundException;
-import data.controller.model.exceptions.PlayerNotFoundException;
-import data.controller.model.exceptions.TeamNotFoundException;
-import data.controller.model.orgs.Team;
-import data.controller.processing.DataUtils;
+import common.model.Game;
+import common.model.Player;
+import common.model.exceptions.EventTypeUnknownException;
+import common.model.exceptions.PeriodTypeNotFoundException;
+import common.model.exceptions.PlayerNotFoundException;
+import common.model.exceptions.TeamNotFoundException;
+import common.model.orgs.Team;
+import common.utils.DataUtils;
 import lombok.Data;
 import lombok.extern.flogger.Flogger;
 

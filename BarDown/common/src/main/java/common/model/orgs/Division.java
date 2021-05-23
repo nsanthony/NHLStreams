@@ -1,4 +1,4 @@
-package data.controller.model.orgs;
+package common.model.orgs;
 
 public enum Division {
 	ATLANTIC(17, "Atlantic"),

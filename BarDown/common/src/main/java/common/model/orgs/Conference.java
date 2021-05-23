@@ -1,4 +1,4 @@
-package data.controller.model.orgs;
+package common.model.orgs;
 
 public enum Conference {
 	EASTERN(6, "Eastern", "/api/v1/conferences/6"),

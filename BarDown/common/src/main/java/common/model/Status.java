@@ -1,4 +1,4 @@
-package data.controller.model;
+package common.model;
 
 public enum Status {
 	FINAL("Final", 7, "Final", 7, false),

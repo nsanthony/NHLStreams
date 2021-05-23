@@ -1,9 +1,9 @@
-package data.controller.model;
+package common.model;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import data.controller.model.orgs.Team;
+import common.model.orgs.Team;
 import lombok.Data;
 
 @Data

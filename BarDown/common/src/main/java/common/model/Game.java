@@ -1,15 +1,15 @@
-package data.controller.model;
+package common.model;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import data.controller.model.events.Event;
-import data.controller.model.events.ScoreState;
-import data.controller.model.exceptions.PlayerNotFoundException;
-import data.controller.model.exceptions.TeamNotFoundException;
-import data.controller.model.orgs.Team;
+import common.model.events.Event;
+import common.model.events.ScoreState;
+import common.model.exceptions.PlayerNotFoundException;
+import common.model.exceptions.TeamNotFoundException;
+import common.model.orgs.Team;
 import lombok.Data;
 import lombok.extern.flogger.Flogger;
 

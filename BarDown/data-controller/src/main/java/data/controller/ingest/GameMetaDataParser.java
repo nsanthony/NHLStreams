@@ -12,19 +12,19 @@ import com.google.common.flogger.StackSize;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import data.controller.model.Game;
-import data.controller.model.Player;
-import data.controller.model.Position;
-import data.controller.model.Status;
-import data.controller.model.exceptions.ConferenceNotFoundException;
-import data.controller.model.exceptions.DivsionNotFoundException;
-import data.controller.model.exceptions.TeamNotFoundException;
-import data.controller.model.exceptions.VenueNotFoundException;
-import data.controller.model.orgs.Team;
-import data.controller.processing.DataUtils;
+import common.model.Game;
+import common.model.Player;
+import common.model.Position;
+import common.model.Status;
+import common.model.exceptions.ConferenceNotFoundException;
+import common.model.exceptions.DivsionNotFoundException;
+import common.model.exceptions.TeamNotFoundException;
+import common.model.exceptions.VenueNotFoundException;
+import common.model.orgs.Team;
+import common.utils.DataUtils;
 import lombok.Data;
 import lombok.extern.flogger.Flogger;
-
+g
 @Flogger
 @Data
 public class GameMetaDataParser {

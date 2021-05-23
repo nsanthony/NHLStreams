@@ -1,4 +1,4 @@
-package data.controller.model.orgs;
+package common.model.orgs;
 
 public enum Venue {
 	BBAT(5027, "BB&T Center", "Sunrise"),

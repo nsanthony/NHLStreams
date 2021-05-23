@@ -8,10 +8,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import data.controller.model.Game;
-import data.controller.model.events.Event;
-import data.controller.model.exceptions.EventTypeUnknownException;
-import data.controller.model.exceptions.PeriodTypeNotFoundException;
+import common.model.Game;
+import common.model.events.Event;
+import common.model.exceptions.EventTypeUnknownException;
+import common.model.exceptions.PeriodTypeNotFoundException;
 import lombok.Data;
 import lombok.extern.flogger.Flogger;
 

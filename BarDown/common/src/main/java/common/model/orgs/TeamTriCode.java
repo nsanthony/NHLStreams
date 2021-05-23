@@ -1,4 +1,4 @@
-package data.controller.model.orgs;
+package common.model.orgs;
 
 public enum TeamTriCode {
 	//fill this out later

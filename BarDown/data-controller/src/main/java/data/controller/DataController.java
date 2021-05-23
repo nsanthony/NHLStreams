@@ -20,10 +20,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import common.model.Game;
+import common.model.Status;
 import data.controller.ingest.DataParser;
 import data.controller.ingest.GameMetaDataParser;
-import data.controller.model.Game;
-import data.controller.model.Status;
 import lombok.extern.flogger.Flogger;
 
 @Flogger

@@ -1,4 +1,4 @@
-package data.controller.model.events;
+package common.model.events;
 
 public enum EventType {
 	GAME_SCHEDULED("GAME_SCHEDULED", false),

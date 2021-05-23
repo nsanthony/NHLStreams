@@ -1,4 +1,4 @@
-package data.controller.model;
+package common.model;
 
 public enum Position {
 	DEFENSE("D", "Defenseman", "Defenseman", "D"),

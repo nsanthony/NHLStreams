@@ -15,8 +15,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import common.model.Status;
 import data.controller.ingest.DataParser;
-import data.controller.model.Status;
 import lombok.extern.flogger.Flogger;
 
 @Flogger
@@ -28,7 +28,7 @@ public class DataControllerTests {
 	@BeforeAll
 	public static void setup() {
 		baseUrl = "http://statsapi.web.nhl.com/api/v1";
-		eventExtension = "/game/2017020602/feed/live";
+		eventExtension = "/game/2017020602/feed/live"g;
 		path = "event.json";
 		
 	}

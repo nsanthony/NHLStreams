@@ -1,4 +1,4 @@
-package data.controller.model.exceptions;
+package common.model.exceptions;
 
 import lombok.extern.flogger.Flogger;
 

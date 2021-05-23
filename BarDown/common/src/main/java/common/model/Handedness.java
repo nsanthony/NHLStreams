@@ -1,4 +1,4 @@
-package data.controller.model;
+package common.model;
 
 import java.io.Serializable;
 

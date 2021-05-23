@@ -4,6 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
+import common.model.Handedness;
+import common.model.Player;
+import common.model.Position;
+
 public class PlayerTests {
 	
 	@Test

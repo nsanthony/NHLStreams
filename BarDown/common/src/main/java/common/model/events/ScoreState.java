@@ -1,4 +1,4 @@
-package data.controller.model.events;
+package common.model.events;
 
 import lombok.Data;
 

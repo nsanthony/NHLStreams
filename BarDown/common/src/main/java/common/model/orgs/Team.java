@@ -1,13 +1,13 @@
-package data.controller.model.orgs;
+package common.model.orgs;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import data.controller.model.exceptions.ConferenceNotFoundException;
-import data.controller.model.exceptions.DivsionNotFoundException;
-import data.controller.model.exceptions.TeamNotFoundException;
-import data.controller.model.exceptions.VenueNotFoundException;
-import data.controller.processing.DataUtils;
+import common.model.exceptions.ConferenceNotFoundException;
+import common.model.exceptions.DivsionNotFoundException;
+import common.model.exceptions.TeamNotFoundException;
+import common.model.exceptions.VenueNotFoundException;
+import common.utils.DataUtils;
 import lombok.Data;
 
 @Data
