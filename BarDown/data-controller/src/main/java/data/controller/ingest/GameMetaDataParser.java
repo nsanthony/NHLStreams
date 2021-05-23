@@ -24,7 +24,7 @@ import common.model.orgs.Team;
 import common.utils.DataUtils;
 import lombok.Data;
 import lombok.extern.flogger.Flogger;
-g
+
 @Flogger
 @Data
 public class GameMetaDataParser {

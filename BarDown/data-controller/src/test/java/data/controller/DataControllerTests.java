@@ -28,7 +28,7 @@ public class DataControllerTests {
 	@BeforeAll
 	public static void setup() {
 		baseUrl = "http://statsapi.web.nhl.com/api/v1";
-		eventExtension = "/game/2017020602/feed/live"g;
+		eventExtension = "/game/2017020602/feed/live";
 		path = "event.json";
 		
 	}

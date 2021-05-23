@@ -34,12 +34,14 @@ allprojects{
 
 
 
+subprojects {
+	apply plugin: 'java'
+}
 
 allprojects {
 	apply plugin: 'java'
 	
     dependencies {
-    
     	compileOnly 'org.projectlombok:lombok:1.18.20'
 		annotationProcessor 'org.projectlombok:lombok:1.18.20'
 	
@@ -57,6 +59,8 @@ allprojects {
 	    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
 	}
 }
+
+
 
 
 run.classpath = sourceSets.main.runtimeClasspath
