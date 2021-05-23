@@ -12,7 +12,7 @@ dependencies {
 	implementation 'com.google.flogger:flogger-system-backend'
 	annotationProcessor 'org.projectlombok:lombok'
 
-	//testImplemenation project(':common')
+	testImplementation project(':common')
 	testImplementation 'org.junit.jupiter:junit-jupiter-api'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 }

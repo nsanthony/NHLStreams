@@ -34,12 +34,10 @@ allprojects{
 
 
 
-subprojects {
-	apply plugin: 'java'
-}
-
 allprojects {
 	apply plugin: 'java'
+	apply plugin: 'java-library'
+	apply plugin: 'application'
 	
     dependencies {
     	compileOnly 'org.projectlombok:lombok:1.18.20'
